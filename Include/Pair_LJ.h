@@ -13,27 +13,28 @@
 
 class Pair_LJ {
 
-    public:
-    /**
-     * Default constructor
-     * @param Pointer to atom class
-     */
-    Pair_LJ(double epsilon, double sigma);
+ public:
+  Pair_LJ(){}
+  /**
+   * Default constructor
+   * @param Pointer to atom class
+   */
+  Pair_LJ(double epsilon, double sigma);
+  
+  /**
+   * Default destructor
+   */
+  virtual ~Pair_LJ();
+  
+  /**
+   * Force computer
+   * @return Standard error code
+   */
+  void ComputeForce(Atom *atom);
+  
+  /* variables */
+  double sigma,epsilon;
 
-    /**
-     * Default destructor
-     */
-    virtual ~Pair_LJ();
-
-    /**
-     * Force computer
-     * @return Standard error code
-     */
-    void ComputeForce(Atom *atom);
-
-/* variables */
-    double sigma,epsilon;
-
-}
+};
 
 #endif //> !class

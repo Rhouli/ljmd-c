@@ -12,33 +12,33 @@
 #include "Force.h"
 
 class Pair {
-
-    public:
+  
+ public:
     /**
      * Default constructor
      */
-    Pair();
-
-    /**
-     * Full constructor
-     */
-    Pair(char* pot_type, double arg1, double arg2);
-
-    /**
-     * Default destructor
-     */
-    virtual ~Pair();
-
-    /**
-     * Init
-     * @param Pointer to atom class
-     * @return Standard error code
-     */
-    static void ComputeForce(Atom *atom);
-    class Pair_LJ* LJ;
-//    class Morse* Pair_Morse;
-    char *pot_type;
-
-}
+  Pair(){}
+  
+  /**
+   * Full constructor
+   */
+  Pair(char* pot_type, double arg1, double arg2);
+  
+  /**
+   * Default destructor
+   */
+  virtual ~Pair();
+  
+  /**
+   * Init
+   * @param Pointer to atom class
+   * @return Standard error code
+   */
+  static void ComputeForce(Atom *atom);
+  class Pair_LJ* LJ;
+  //    class Morse* Pair_Morse;
+  char *pot_type;
+  
+};
 
 #endif //> !class
