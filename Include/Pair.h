@@ -17,7 +17,7 @@ class Pair {
     /**
      * Default constructor
      */
-    Pair(){}
+    Pair();
 
     /**
      * Full constructor
@@ -39,6 +39,6 @@ class Pair {
 //    class Morse* Pair_Morse;
     char *pot_type;
 
-};
+}
 
 #endif //> !class

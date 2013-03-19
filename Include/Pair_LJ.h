@@ -14,8 +14,7 @@
 class Pair_LJ {
 
     public:
-    Pair_LJ(){}
-     /**
+    /**
      * Default constructor
      * @param Pointer to atom class
      */
@@ -35,6 +34,6 @@ class Pair_LJ {
 /* variables */
     double sigma,epsilon;
 
-};
+}
 
 #endif //> !class

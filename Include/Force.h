@@ -8,13 +8,6 @@
 #ifndef MD_FORCE_H
 #define MD_FORCE_H
 
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <math.h>
-#include "Helper.h"
-
 //Includes (TODO)
 #include "Atom.h"
 
@@ -24,7 +17,7 @@ class Force {
     /**
      * Default constructor
      */
-    Force(){}
+    Force();
 
     /**
      * Default constructor
