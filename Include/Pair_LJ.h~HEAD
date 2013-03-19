@@ -24,7 +24,7 @@ class Pair_LJ {
     /**
      * Default destructor
      */
-    ~Pair_LJ(){}
+    virtual ~Pair_LJ();
 
     /**
      * Force computer

@@ -10,7 +10,6 @@
 
 //Includes (TODO)
 #include "Force.h"
-#include "Pair_LJ.h"
 
 class Pair {
 
@@ -35,7 +34,7 @@ class Pair {
      * @param Pointer to atom class
      * @return Standard error code
      */
-    void ComputeForce(Atom *atom);
+    static void ComputeForce(Atom *atom);
     class Pair_LJ* LJ;
 //    class Morse* Pair_Morse;
     char *pot_type;

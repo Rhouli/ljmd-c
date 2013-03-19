@@ -13,11 +13,10 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
-//#include "Helper.h"
+#include "Helper.h"
 
 //Includes (TODO)
 #include "Atom.h"
-#include "Pair.h"
 
 class Force {
 
@@ -42,14 +41,14 @@ class Force {
      * @param Pointer to atom class
      * @return Standard error code
      */
-    void ComputeForce(Atom* atom);
+    static void ComputeForce(Atom* atom);
 
     /**
      * Calculate different kinds of pair-potentials
      * @return a pointer to an object of class Pair
     */
-    class Pair* pair;
-    char* pot;
+    class Pair *pair;
+    char *pot;
 
 };
 
