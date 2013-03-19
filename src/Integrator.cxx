@@ -33,13 +33,13 @@ bool Init(Atom *atom, Force *force)
         std::cerr << "( ERROR ) Atom null pointer... Abort Init!" << std::endl; 
         return false;
     }
-    else m_atom  = atom;
+    else this.m_atom  = atom;
     
     if(!force) {  
         std::cerr << "( ERROR ) Force null pointer... Abort Init!" << std::endl; 
         return false;
     }
-    else m_force = force;
+    else this.m_force = force;
 
     //No error
     return true;
