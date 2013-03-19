@@ -1,0 +1,39 @@
+    Installing the python frontend
+    ------------------------------
+
+    The python frontend is built on top of the Atomistic Simulation Environment
+        https://wiki.fysik.dtu.dk/ase
+    which is developed at the Technical University of Denmark.
+
+ 1) If not present, install python
+   
+        http://www.python.org/getit/
+
+ 2) If not present, install the Atomistic Simulation Environment
+    For the trunk (development) version do
+
+        svn checkout https://svn.fysik.dtu.dk/projects/ase/trunk ase
+
+    ASE does not need to be built, but it makes sense to copy the
+    package to your python package repository:
+        
+        cd ase
+        sudo python setup.py build install
+
+ 3) Add the MyMD module to ASE
+  
+        sudo python setup.py install
+
+ 4) For the moment, you have to add the directory with the MD binaries 
+    (ljmd-serial.x, ...) to your $PATH variable:
+
+        export PATH=$PATH:/path/to/binaries
+
+    This requirement will be removed in later releases.
+
+
+    And you are done! 
+
+    Feel free to check out the examples in <root>/python/examples
+    that demonstrate the capabilities of this package
+    
