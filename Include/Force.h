@@ -20,11 +20,12 @@
 #include "Pair.h"
 
 class Force {
-
-    public:
-    /**
+  
+ public:
+  /**
      * Default constructor
      */
+<<<<<<< HEAD
     Force(){}
 
     /**
@@ -51,6 +52,34 @@ class Force {
     class Pair* pair;
     char* pot;
 
+=======
+  Force(){}
+  
+  /**
+   * Default constructor
+   */
+  Force(char* pot, char* pot_type, double arg1, double arg2);
+  
+  /**
+   * Default destructor
+   */
+  virtual ~Force();
+  
+  /**
+   * Init
+   * @param Pointer to atom class
+   * @return Standard error code
+   */
+  static void ComputeForce(Atom* atom);
+  
+  /**
+   * Calculate different kinds of pair-potentials
+   * @return a pointer to an object of class Pair
+   */
+  class Pair *pair;
+  char *pot;
+  
+>>>>>>> a4c8521fa412f66d9fe1aa7bc6951ecd1660fe0c
 };
 
 #endif //> !class

@@ -13,11 +13,12 @@
 #include "Pair_LJ.h"
 
 class Pair {
-
-    public:
+  
+ public:
     /**
      * Default constructor
      */
+<<<<<<< HEAD
     Pair(){}
 
     /**
@@ -40,6 +41,30 @@ class Pair {
 //    class Morse* Pair_Morse;
     char *pot_type;
 
+=======
+  Pair(){}
+  
+  /**
+   * Full constructor
+   */
+  Pair(char* pot_type, double arg1, double arg2);
+  
+  /**
+   * Default destructor
+   */
+  virtual ~Pair();
+  
+  /**
+   * Init
+   * @param Pointer to atom class
+   * @return Standard error code
+   */
+  static void ComputeForce(Atom *atom);
+  class Pair_LJ* LJ;
+  //    class Morse* Pair_Morse;
+  char *pot_type;
+  
+>>>>>>> a4c8521fa412f66d9fe1aa7bc6951ecd1660fe0c
 };
 
 #endif //> !class
