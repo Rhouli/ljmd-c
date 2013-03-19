@@ -1,26 +1,38 @@
+#*********************************
 # -*- Makefile -*-
+# Author: Ryan Houlihan
+# Email: ryan.houlihan90@gmail.com
+#*********************************
 SHELL=/bin/sh
-CC=gcc
+GCC=g++
 CFLAGS=-fopenmp -Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
 # list of source files
-SRC=ljmd.c
-VPATH=../src
+SRC_MAT= MyMD.cpp Helper.cpp Force.cpp Atom.cpp Integrator.cpp Pair.cpp Pair_LJ.cpp
+INC_MAT = $(SRC:%.cpp=%.h)
 OBJ=$(SRC:%.c=%.o)
 
-default: ../ljmd-parallel.x
+SRCDIR=../src
+INCDIR=../Include
+
+vpath %.cpp $(SRCDIR)
+vpath %.h $(INCDIR)
+
+default: ../MyMD-parallel.x
 
 clean:
-	rm -f *.mod *.o ../ljmd-parallel.x
+	rm -f *.mod *.o ../MyMD-parallel.x
+
+.depend: $(SRC_MAT)
+	$(GCC) -MM -I $(INCDIR) $^ > $@
 
 # linker rule
-../ljmd-parallel.x: $(OBJ)
-	$(CC) -o $@ $(CFLAGS) $^ $(LDLIBS)
+../MyMD-parallel.x: $(OBJ)
+	$(GCC) -o $@ $(CFLAGS) $^ $(LDLIBS)
 
 # compilation pattern rule for objects
-%.o: %.c
-	$(CC) -c $(CFLAGS) $<
+%.o: $(SRC) $(INC)
+	$(GCC) -c $(CFLAGS) $<
 
-# dependencies
-ljmd.o: ljmd.c
+sinclude .depend

@@ -1,26 +1,39 @@
+#*********************************
 # -*- Makefile -*-
+# Author: Ryan Houlihan
+# Email: ryan.houlihan90@gmail.com
+#*********************************
+
 SHELL=/bin/sh
-CC=gcc
+GCC=g++
 CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
 # list of source files
-SRC=ljmd.c
-VPATH=../src
-OBJ=$(SRC:%.c=%.o)
+SRC_MAT= MyMD.cpp Helper.cpp Force.cpp Atom.cpp Integrator.cpp Pair.cpp Pair_LJ.cpp
+INC_MAT= $(SRC:%.cpp=%.h)
+OBJ=$(SRC:%.cpp=%.o)
 
-default: ../ljmd-serial.x
+SRCDIR=../src
+INCDIR=../Include
+
+vpath %.cpp $(SRCDIR)
+vpath %.h $(INCDIR)
+
+default: ../MyMD-serial.x
 
 clean:
-	rm -f *.mod *.o ../ljmd-serial.x
+	rm -f *.mod *.o ../MyMD-serial.x
+
+.depend: $(SRC_MAT)
+	$(GCC) -MM -I $(INCDIR) $^ > $@
 
 # linker rule
-../ljmd-serial.x: $(OBJ)
-	$(CC) -o $@ $(CFLAGS) $^ $(LDLIBS)
+../MyMD-serial.x: $(OBJ)
+	$(GCC) -o $@ $(CFLAGS) $^ $(LDLIBS)
 
 # compilation pattern rule for objects
-%.o: %.c
-	$(CC) -c $(CFLAGS) $<
+%.o: %.cpp
+	$(GCC) -c $(CFLAGS) $< -I $(INCDIR)
 
-# dependencies
-ljmd.o: ljmd.c
+sinclude .depend
