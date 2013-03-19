@@ -13,19 +13,17 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <math.h>
-//#include "Helper.h"
+#include "Helper.h"
 
 //Includes (TODO)
 #include "Atom.h"
-#include "Pair.h"
 
 class Force {
-  
- public:
-  /**
+
+    public:
+    /**
      * Default constructor
      */
-<<<<<<< HEAD
     Force(){}
 
     /**
@@ -43,43 +41,15 @@ class Force {
      * @param Pointer to atom class
      * @return Standard error code
      */
-    void ComputeForce(Atom* atom);
+    static void ComputeForce(Atom* atom);
 
     /**
      * Calculate different kinds of pair-potentials
      * @return a pointer to an object of class Pair
     */
-    class Pair* pair;
-    char* pot;
+    class Pair *pair;
+    char *pot;
 
-=======
-  Force(){}
-  
-  /**
-   * Default constructor
-   */
-  Force(char* pot, char* pot_type, double arg1, double arg2);
-  
-  /**
-   * Default destructor
-   */
-  virtual ~Force();
-  
-  /**
-   * Init
-   * @param Pointer to atom class
-   * @return Standard error code
-   */
-  static void ComputeForce(Atom* atom);
-  
-  /**
-   * Calculate different kinds of pair-potentials
-   * @return a pointer to an object of class Pair
-   */
-  class Pair *pair;
-  char *pot;
-  
->>>>>>> a4c8521fa412f66d9fe1aa7bc6951ecd1660fe0c
 };
 
 #endif //> !class
