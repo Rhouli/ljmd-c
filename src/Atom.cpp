@@ -27,7 +27,7 @@ Atoms::Atoms() :
     m_npairs(0),
     m_pairlist(NULL),
     m_ncells(0),
-    m_cells(new std::vector<int>(0))
+    m_cells(0, std::vector<int>(0))
 {};
 
 
