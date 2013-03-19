@@ -47,35 +47,6 @@ struct _mdsys {
 };
 typedef struct _mdsys mdsys_t;
 
-/* helper function: read a line and then return
-   the first string with whitespace stripped off */
-static int get_a_line(FILE *fp, char *buf)
-{
-    char tmp[BLEN], *ptr;
-
-    /* read a line and cut of comments and blanks */
-    if (fgets(tmp,BLEN,fp)) {
-        int i;
-
-        ptr=strchr(tmp,'#');
-        if (ptr) *ptr= '\0';
-        i=strlen(tmp); --i;
-        while(isspace(tmp[i])) {
-            tmp[i]='\0';
-            --i;
-        }
-        ptr=tmp;
-        while(isspace(*ptr)) {++ptr;}
-        i=strlen(ptr);
-        strcpy(buf,tmp);
-        return 0;
-    } else {
-        perror("problem reading input");
-        return -1;
-    }
-    return 0;
-}
- 
 /* helper function: zero out an array */
 __attribute__((always_inline))
 static void azzero(double *d, const int n)
@@ -464,53 +435,15 @@ int main(int argc, char **argv)
 #else
     sys.nthreads=1;
 #endif
-
-    /* read input file */
-    if(get_a_line(stdin,line)) return 1;
-    sys.natoms=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.mass=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.epsilon=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.sigma=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.rcut=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.box=atof(line);
-    if(get_a_line(stdin,restfile)) return 1;
-    if(get_a_line(stdin,trajfile)) return 1;
-    if(get_a_line(stdin,ergfile)) return 1;
-    if(get_a_line(stdin,line)) return 1;
-    sys.nsteps=atoi(line);
-    if(get_a_line(stdin,line)) return 1;
-    sys.dt=atof(line);
-    if(get_a_line(stdin,line)) return 1;
-    nprint=atoi(line);
+   
+    /* MyMD->readInput(); */
 
     /* allocate memory */
     sys.pos=(double *)malloc(3*sys.natoms*sizeof(double));
     sys.vel=(double *)malloc(3*sys.natoms*sizeof(double));
     sys.frc=(double *)malloc(sys.nthreads*3*sys.natoms*sizeof(double));
 
-    /* read restart */
-    fp=fopen(restfile,"r");
-    if(fp) {
-        int natoms;
-        natoms=sys.natoms;
-        
-        for (i=0; i<natoms; ++i) {
-            fscanf(fp,"%lf%lf%lf",sys.pos+i, sys.pos+natoms+i, sys.pos+2*natoms+i);
-        }
-        for (i=0; i<natoms; ++i) {
-            fscanf(fp,"%lf%lf%lf",sys.vel+i, sys.vel+natoms+i, sys.vel+2*natoms+i);
-        }
-        fclose(fp);
-        azzero(sys.frc, 3*sys.nthreads*sys.natoms);
-    } else {
-        perror("cannot read restart file");
-        return 3;
-    }
+    /* MyMD->readRestart(); */
 
     /* initialize forces and energies.*/
     sys.nfi=0;
