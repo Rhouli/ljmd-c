@@ -51,6 +51,48 @@ class Integrator {
     */
     static const bool UpdateCells();
 
+    /**
+     * Set time step
+     */
+    inline void SetTimestep(double timestep) { this.m_timestep = timestep; };
+
+    /**
+     * Set grid layout
+     */
+    inline void SetNGrid(int ngrid) { this.m_ngrid = ngrid; };
+
+    /**
+     * Set size of items in cell container
+     */
+    inline void SetNIdx(int nidx) { this.m_idx = idx; };
+
+    /**
+     * Set Delta
+     */
+    inline void SetDelta(double delta) { this.m_delta = delta; };
+
+    /* ################################################################################ */
+
+    /**
+     * Get time step
+     */
+    const double GetTimestep() { return this.m_timestep; };
+
+    /**
+     * Get grid layout
+     */
+    const int GetNGrid() { return this.m_ngrid; };
+
+    /**
+     * Get size of items in cell container
+     */
+    const int GetNIdx() { return this.m_idx; };
+
+    /**
+     * Get Delta
+     */
+    const double GetDelta() { return this.m_delta; };
+
     private:
         /**
          * Pointer to atoms
@@ -62,6 +104,26 @@ class Integrator {
          */
         Force *m_force;
 
+        /**
+         * Time step between iterations
+         * @brief In C version: dt
+         */
+        double m_timestep;
+        
+        /**
+         * Grid layout
+         */
+        int m_ngrid;
+
+        /**
+         * Size of items in cell container
+         */
+        int m_nidx;
+
+        /**
+         * Ratio: Box size / ngrid
+         */
+        double m_delta; 
 
 };
 
