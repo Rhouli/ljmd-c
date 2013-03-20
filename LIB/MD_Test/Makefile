@@ -1,20 +1,26 @@
-SHELL = /bin/sh
+#*********************************
+# -*- Makefile -*-
+# Author: Ryan Houlihan
+# Email: ryan.houlihan90@gmail.com
+#*********************************
 
-CC =		g++
-CCFLAGS =	-O
+SHELL = /bin/sh
+GCC = g++
+
 # ALl tests to be produced
-TESTS= 		test_pair_LJ
-LAMMPS = 	../../../src
+TESTS =	test_pair_LJ
+MYMD_SRC_DIR = 	../../src
+MYMD_INC_DIR = 	../../Include
 USER_DIR = ..
 LINKFLAGS =	-o
-LIB =           -llmp_serial
-# Link to library and Stubs
-STUBS = 	../../../src/STUBS
-MPI = 		${STUBS}/libmpi.a
 
+INCLUDE = -I $(INC_DIR) -I $(MYMD_INC_DIR) -I $(GTEST_INC_DIR)
+EXTRA_LIBS = -I${GTEST}
 
-# GOOGLE TEST
-#----------------------------------------------------------------------
+####################################
+###*********GOOGLE TEST**********###
+####################################
+
 # Google Test root dir
 GTEST_DIR = ../gtest
 
@@ -22,31 +28,35 @@ GTEST_DIR = ../gtest
 GTEST = $(GTEST_DIR)/include
 
 # Google test C++ compiler flags
-CXXFLAGS = -g -Wall -Wextra
+GCCFLAGS = -g -Wall -Wextra -O
 
 # All Google Test Headers
-GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
-		$(GTEST_DIR)/include/gtest/internal/*.h
+#GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
+#		$(GTEST_DIR)/include/gtest/internal/*.h
 
-all: ${TESTS}
+GTEST_HEADERS_DIR = $(GTEST_DIR)/include/gtest		
+		$(GTEST_DIR)/include/gtest/internal
+
+####################################
+###*********COMPILATION**********###
+####################################
+
+default: ${TESTS}
 
 test_pair_LJ: test_pair_LJ.o
 
 cleanAll:
 	rm -rf ${TESTS} gtest.a gtest_main.a *.o 
 
-# Builds a test.  A test should link with either gtest.a or
-# gtest_main.a, depending on whether it defines its own main()
-# function.
-
-EXTRA_LIBS = -I${GTEST} -I${STUBS} -I${LAMMPS}
+.depend: $(SRC_MAT)
+	$(GCC) -MM -I $(INCDOR) $^ > $@
 
 # Create Object File
-
-%.o: %.cpp %.h ${GTEST_HEADERS}
-	$(CC) ${EXTRA_LIBS} ${CCFLAGS} ${EXTRA_INC} -o $@ -c $<
+%.o: %.cpp
+	$(GCC) ${GCCFLAGS} $(EXTRA_LIBS) -o $@ -c $< $(INCLUDE)
 
 # Compile program
-
 %: %.o GTest/gtest_main.a  GTest/gtest.a
-	$(CC) -L${LAMMPS} $^ ${LIB} ${MPI_LIB} -lpthread ${LINKFLAGS} $@
+	$(GCC) $^ -lpthread ${LINKFLAGS} $@
+
+sinclude .depend
