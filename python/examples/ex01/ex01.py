@@ -16,7 +16,7 @@ myatoms = SimpleCubic('Ar', latticeconstant=3.0, size=(5,5,5))
 MaxwellBoltzmannDistribution(myatoms, temp= units.kB * 50)
 
 # Set up MyMD calculator
-calc  = mymd.MyMD(label='mymd',
+calc  = mymd.FileIOMyMD(label='mymd',
                   nsteps=10000,
                   dt=2.0,
                   nprint=100)

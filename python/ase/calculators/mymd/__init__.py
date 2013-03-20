@@ -17,7 +17,7 @@ from ase.calculators.calculator import FileIOCalculator, Parameters, ReadError
 import potentials
 import io
 
-class MyMD(FileIOCalculator):
+class FileIOMyMD(FileIOCalculator):
     """ ASE calculator for MyMD
 
     The standard class members used by FileIOCalculator are

@@ -13,7 +13,7 @@ box = 17.158
 myatoms.set_cell([box, box, box])
 
 # Set up calculator
-calc  = mymd.MyMD(label='mymd',
+calc  = mymd.FileIOMyMD(label='mymd',
                   nsteps=10000,
                   dt=5.0,
                   nprint=100)
