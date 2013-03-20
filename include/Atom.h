@@ -115,13 +115,22 @@ class Atoms {
     static const bool SetPairItem(int idx, int pair);
 
     /**
-     * Set cell data by index
+     * Set cell index by index
      * @param cellID Index of cell container
      * @param idxID Index of atom
      * @param idx Index
      * @return Standard error code
      */
-    static const bool SetCellData(int cellID, int idxID, int idx);
+    static const bool SetCellIndex(int cellID, int idxID, int idx);
+
+    /**
+     * Set number of atoms per cell by index
+     * @param cellID Index of cell container
+     * @param natoms Number of atoms in cell
+     * @return Standard error code
+     */
+    static const bool SetCellNAtoms(int cellID, int natoms);
+
 
     /* ################################################################################################# */
 
@@ -155,7 +164,13 @@ class Atoms {
      * @return pos Position of atom
      */
     double GetPosition(int idx);
-    
+   
+    /**
+     * Get position of atoms by index
+     * @return Position array of atoms
+     */
+    inline double* GetPosition() { return this.m_position; };
+ 
     /**
      * Get velocity of atoms by index
      * @param idx Index of atom
@@ -163,6 +178,12 @@ class Atoms {
      */
     double GetVelocity(int idx);
     
+    /**
+     * Get velocity of atoms by index
+     * @return Velocity array of atoms
+     */
+    inline double* GetVelocity() { return this.m_velocity; };
+
     /**
      * Get force acting on atoms by index
      * @param idx Index of atom
@@ -172,7 +193,7 @@ class Atoms {
 
     /**
      * Get force array acting on atoms
-     * @return forces
+     * @return Force array
      */
     inline double* GetForce() { return this.m_force; };
 
@@ -214,12 +235,33 @@ class Atoms {
     inline int GetNCells() { return this.m_ncells; };
 
     /**
-     * Get cell data by index
+     * Get cell index by index
      * @param cellID  Index of cell container
      * @param idxID   Index of idx container
      * @return Index of atom
      */
-    const int GetCellData(int cellID, int idxID);
+    const int GetCellIndex(int cellID, int idxID);
+
+    /**
+     * Get cell index vector of given index
+     * @param cellID  Index of cell container
+     * @return Index of atom
+     */
+    std::vector<int> GetCellIndex(int cellID);
+
+    /**
+     * Get cell vector size of given index
+     * @param cellID  Index of cell container
+     * @return Index of atom
+     */
+    const int GetCellIndexSize(int cellID);
+
+    /**
+     * Get number of atoms per cell by index
+     * @param cellID Index of cell container
+     * @return Number of atoms in cell
+     */
+    const int GetCellNAtoms(int cellID);
 
     private:
         /**
@@ -292,8 +334,13 @@ class Atoms {
          */
         int m_ncells;
 
+	/**
+	 * Cell list data: natoms
+         */
+	int* m_natoms_in_cell;
+
         /**
-         * Cell list data
+         * Cell list data: idxlist
          */
         std::vector<std::vector<int> > m_cells;
 

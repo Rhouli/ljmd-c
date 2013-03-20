@@ -28,6 +28,7 @@ Atoms::Atoms() :
     m_npairs(0),
     m_pairlist(NULL),
     m_ncells(0),
+    m_natoms_in_cell(NULL),
     m_cells(0, std::vector<int>(0))
 {};
 
@@ -38,10 +39,11 @@ Atoms::Atoms() :
  */
 Atoms::~Atoms()
 {
-    if(this.m_position) delete this.m_position;
-    if(this.m_velocity) delete this.m_velocity;
-    if(this.m_force)    delete this.m_force;
-    if(this.m_pairlist) delete this.m_pairlist;
+    if(this.m_position)       delete this.m_position;
+    if(this.m_velocity)       delete this.m_velocity;
+    if(this.m_force)          delete this.m_force;
+    if(this.m_pairlist)       delete this.m_pairlist;
+    if(this.m_natoms_in_cell) delete this.m_natoms_in_cell;
 };
 
 
@@ -145,14 +147,12 @@ int Atoms::SetNCells(int ncells)
     //Set number of cells
     this.m_ncells = ncells;
 
-    //Sanity check
-    if(this.m_pairlist) {
-        std::cout << "( ERROR ) Atoms::SetNCells(): Bug hint > pairlist array already defined. Abort!" << std::endl;
-        return _def_;
-    }
-
     //Define cell data container ------>
+    this.m_cells.clear();
     this.m_cells.resize(ncells);
+    
+    if(this.m_natoms_in_cell) delete this.m_natoms_in_cell;
+    this.m_natoms_in_cell = new int[ncells];
     
     int nidx = 2 * this.m_natoms / ncells + 2;
     nidx = ((nidx/2) + 1) * 2;
@@ -162,6 +162,7 @@ int Atoms::SetNCells(int ncells)
     } //-------------------------------<
 
     //Define pair list container
+    if(this.m_pairlist) delete this.m_pairlist;
     this.m_pairlist = new int[2*ncells*ncells];
 
     //Index for Integrator class
@@ -193,15 +194,15 @@ bool Atoms::SetPairItem(int idx, int pair)
  * Set cell data by index
  * ___________________________________________________________________________________
  */
-bool Atoms::SetCellData(int cellID, int idxID, int idx)
+bool Atoms::SetCellIndex(int cellID, int idxID, int idx)
 {
     //Sanity checks
     if(cellID>this.m_cells.size()) {
-        std::cout << "( ERROR ) Atoms::SetCellData(): cellID index out-of-bound. Abort!" << std::endl;
+        std::cout << "( ERROR ) Atoms::SetCellIndex(): cellID index out-of-bound. Abort!" << std::endl;
         return false;
     }
     if(idxID>this.m_cells[cellID].size()) {
-        std::cout << "( ERROR ) Atoms::SetCellData(): idxID index out-of-bound. Abort!" << std::endl;
+        std::cout << "( ERROR ) Atoms::SetCellIndex(): idxID index out-of-bound. Abort!" << std::endl;
         return false;
     }
 
@@ -211,6 +212,27 @@ bool Atoms::SetCellData(int cellID, int idxID, int idx)
     //No errors
     return true;
 };
+
+
+/**
+ * Set number of atoms per cell by index
+ * ___________________________________________________________________________________
+ */
+bool Atoms::SetCellNAtoms(int cellID, int natoms)
+{
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::SetCellNAtoms(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    //Set number of atoms
+    this.m_natoms_in_cell[cellID] = natoms;
+
+    //No errors
+    return true;
+};
+
 
 /* ######################################################################################################## */
 
@@ -280,18 +302,18 @@ int Atoms::GetPairItem(int idx)
 
 
 /**
- * Get cell data by index
+ * Get cell index by index
  * ___________________________________________________________________________________
  */
-int Atoms::GetCellData(int cellID, int idxID)
+int Atoms::GetCellIndex(int cellID, int idxID)
 {
     //Sanity checks
     if(cellID>this.m_cells.size()) {
-        std::cout << "( ERROR ) Atoms::GetCellData(): cellID index out-of-bound. Abort!" << std::endl;
+        std::cout << "( ERROR ) Atoms::GetCellIndex(): cellID index out-of-bound. Abort!" << std::endl;
         return false;
     }
     if(idxID>this.m_cells[cellID].size()) {
-        std::cout << "( ERROR ) Atoms::GetCellData(): idxID index out-of-bound. Abort!" << std::endl;
+        std::cout << "( ERROR ) Atoms::GetCellIndex(): idxID index out-of-bound. Abort!" << std::endl;
         return false;
     }
 
@@ -299,8 +321,50 @@ int Atoms::GetCellData(int cellID, int idxID)
 };
 
 
+/**
+ * Get cell vector by index
+ * ___________________________________________________________________________________
+ */
+std::vector<int> Atoms::GetCellIndex(int cellID)
+{
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::GetCellIndex(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_cells[cellID];
+};
 
 
+/**
+ * Get cell vector size by index
+ * ___________________________________________________________________________________
+ */
+int Atoms::GetCellIndex(int cellID)
+{
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::GetCellIndex(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_cells[cellID].size();
+};
 
 
+/**
+ * Get number of atoms per cell by index
+ * ___________________________________________________________________________________
+ */
+int Atoms::GetCellNAtoms(int cellID)
+{
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::GetCellNAtoms(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_natoms_in_cell[cellID];
+};
 
