@@ -11,6 +11,7 @@ static const double _def_ = -999;
 
 /**
  * Default constructor
+ * ___________________________________________________________________________________
  */
 Atoms::Atoms() :
     m_isInitialized(false),
@@ -33,6 +34,7 @@ Atoms::Atoms() :
 
 /**
  * Default destructor
+ * ___________________________________________________________________________________
  */
 Atoms::~Atoms()
 {
@@ -45,6 +47,7 @@ Atoms::~Atoms()
 
 /**
  * Init atoms
+ * ___________________________________________________________________________________
  */
 bool Atoms::Init(int natoms) 
 {
@@ -75,6 +78,7 @@ bool Atoms::Init(int natoms)
 
 /**
  * Set position of atoms by index
+ * ___________________________________________________________________________________
  */
 bool Atoms::SetPosition(int idx, double pos)
 {
@@ -94,6 +98,7 @@ bool Atoms::SetPosition(int idx, double pos)
 
 /**
  * Set velocity of atoms by index
+ * ___________________________________________________________________________________
  */
 bool Atoms::SetVelocity(int idx, double vel)
 {
@@ -113,6 +118,7 @@ bool Atoms::SetVelocity(int idx, double vel)
 
 /**
  * Set force acting on atoms by index
+ * ___________________________________________________________________________________
  */
 bool Atoms::SetForce(int idx, double force)
 {
@@ -131,7 +137,8 @@ bool Atoms::SetForce(int idx, double force)
 
 
 /**
- * Set number of cells (reserve memory: cells, pairlist)
+ * Set number of cells (and setup pairlist)
+ * ___________________________________________________________________________________
  */
 bool Atoms::SetNCells(int ncells)
 {
@@ -144,6 +151,9 @@ bool Atoms::SetNCells(int ncells)
         return false;
     }
 
+    //Define cell data container
+    this.m_cells.reserve(ncells);
+
     //Define pair list container
     this.m_pairlist = new int[2*ncells*ncells];
 
@@ -151,5 +161,38 @@ bool Atoms::SetNCells(int ncells)
     return true;
 };
 
+
+/**
+ * Set item in pair list container
+ * ___________________________________________________________________________________
+ */
+bool Atoms::SetPairItem(int idx, int pair)
+{
+    //Check index
+    if(idx<0 || idx>(2*this.m_ncells*this.m_ncells-1)) {
+        std::cout << "( ERROR ) Atoms::SetPairItem(): Index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    //Set pair item
+    this.m_pairlist[idx] = pair;
+
+    //No errors
+    return true;
+};
+
+
+/**
+ * Set cell data by index
+ * ___________________________________________________________________________________
+ */
+bool Atoms::SetCellData(int vecIdx, int atomIdx)
+{
+
+
+
+    //No errors
+    return true;
+};
 
 
