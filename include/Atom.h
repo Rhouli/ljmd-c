@@ -126,6 +126,12 @@ class Atoms {
     /* ################################################################################################# */
 
     /**
+     * Get number of atoms
+     * @return number of atoms
+     */
+    inline int GetNAtoms() { return this.m_natoms; };
+
+    /**
      * Get mass
      * @return mass of atoms
      */
@@ -163,6 +169,12 @@ class Atoms {
      * @return force Force acting
      */
     double GetForce(int idx);
+
+    /**
+     * Get force array acting on atoms
+     * @return forces
+     */
+    inline double* GetForce() { return this.m_force; };
 
     /**
      * Get temperature
