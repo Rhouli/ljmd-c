@@ -8,7 +8,8 @@
 #ifndef MD_INTEGRATOR_H
 #define MD_INTEGRATOR_H
 
-//Includes (TODO)
+//Includes
+#include <math.h>
 #include "Atom.h"
 #include "Force.h"
 
@@ -92,6 +93,17 @@ class Integrator {
      * Get Delta
      */
     const double GetDelta() { return this.m_delta; };
+    
+    /** 
+     * Helper function: apply minimum image convention
+     * @return convention
+     */
+    inline double pbc(double x, const double boxby2, const double box)
+    {
+        while (x >  boxby2) x -= box;
+        while (x < -boxby2) x += box;
+        return x;
+    };
 
     private:
         /**
