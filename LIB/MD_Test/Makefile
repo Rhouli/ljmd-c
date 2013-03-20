@@ -9,8 +9,8 @@ GCC = g++
 
 # ALl tests to be produced
 TESTS =	test_pair_LJ
-MYMD_SRC_DIR = 	../../src
-MYMD_INC_DIR = 	../../Include
+MYMD_SRC_DIR = 	../../SRC
+MYMD_INC_DIR = 	../../INC
 USER_DIR = ..
 LINKFLAGS =	-o
 

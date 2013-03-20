@@ -14,8 +14,8 @@ SRC_MAT= MyMD.cpp Helper.cpp Force.cpp Atom.cpp Integrator.cpp Pair.cpp Pair_LJ.
 INC_MAT= $(SRC:%.cpp=%.h)
 OBJ=$(SRC:%.cpp=%.o)
 
-SRCDIR=../src
-INCDIR=../Include
+SRCDIR=../SRC
+INCDIR=../INC
 
 vpath %.cpp $(SRCDIR)
 vpath %.h $(INCDIR)
