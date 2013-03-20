@@ -12,27 +12,26 @@
 #endif
 
 /* construction */
-Pair_LJ::Pair_LJ(){
-	Pair_LJ(double e, double s) {
-		epsilon=e;
-		sigma=s;
-	}
+Pair_LJ::Pair_LJ(double e, double s) {
+  epsilon=e;
+  sigma=s;
+}
 
 static void Pair_LJ::ComputeForce(Atom *sys) 
 {
-    double epot;
-
-    epot = 0.0;
-    
+  double epot;
+  
+  epot = 0.0;
+  
 #if defined(_OPENMP)
 #pragma omp parallel reduction(+:epot)
 #endif
-    {
+  {
         double c12,c6,boxby2,rcsq;
         double *fx, *fy, *fz;
         const double *rx, *ry, *rz;
         int i, tid, fromidx, toidx, natoms;
-
+	
         /* precompute some constants */
         c12 = 4.0*epsilon*pow(sigma,12.0);
         c6  = 4.0*epsilon*pow(sigma, 6.0);
@@ -182,8 +181,6 @@ static void Pair_LJ::ComputeForce(Atom *sys)
                 sys->frc[j] += sys->frc[offs+j];
             }
         }
-    }
-    sys->epot = epot;
-}
-
+  }
+  sys->epot = epot;
 }
