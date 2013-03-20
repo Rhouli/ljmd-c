@@ -6,7 +6,7 @@ namespace {
 
   class PairLJTest : public ::testing::Test {
   protected:
-    PairLJTEST() {
+    PairLJTest() {
       
     }
     

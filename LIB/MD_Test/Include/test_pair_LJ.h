@@ -15,4 +15,12 @@
 #include "Atom.h"
 #include "Pair_LJ.h"
 
+class PairLJTest{
+ protected:
+  PairLJTest();
+  virtual ~PairLJTest();
+  virtual void Setup();
+  virtual void TearDown();
+};
+
 #endif

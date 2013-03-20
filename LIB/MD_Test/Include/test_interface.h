@@ -16,4 +16,13 @@
 #include "Pair_LJ.h"
 #include "Integrator.h"
 
+class IntefaceTest{
+ protected:
+  InterfaceTest();
+  virtual ~InterfaceTest();
+  virtual void Setup();
+  virtual void TearDown();
+  
+};
+
 #endif

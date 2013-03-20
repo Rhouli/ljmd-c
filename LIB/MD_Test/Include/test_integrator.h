@@ -16,4 +16,12 @@
 #include "Pair_LJ.h"
 #include "Integrator.h"
 
+class IntegratorTest{
+ protected:
+  IntegratorTest();
+  virtual ~IntegratorTest();
+  virtual void Setup();
+  virtual void TearDown();
+};
+
 #endif
