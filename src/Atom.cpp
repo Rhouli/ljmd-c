@@ -137,10 +137,10 @@ bool Atoms::SetForce(int idx, double force)
 
 
 /**
- * Set number of cells (and setup pairlist)
+ * Set number of cells (and setup cells and pairlist container)
  * ___________________________________________________________________________________
  */
-bool Atoms::SetNCells(int ncells)
+int Atoms::SetNCells(int ncells)
 {
     //Set number of cells
     this.m_ncells = ncells;
@@ -148,17 +148,24 @@ bool Atoms::SetNCells(int ncells)
     //Sanity check
     if(this.m_pairlist) {
         std::cout << "( ERROR ) Atoms::SetNCells(): Bug hint > pairlist array already defined. Abort!" << std::endl;
-        return false;
+        return _def_;
     }
 
-    //Define cell data container
-    this.m_cells.reserve(ncells);
+    //Define cell data container ------>
+    this.m_cells.resize(ncells);
+    
+    int nidx = 2 * this.m_natoms / ncells + 2;
+    nidx = ((nidx/2) + 1) * 2;
+
+    for(int i=0; i<ncells; ++i) {
+        this.m_cells[i].resize(nidx);
+    } //-------------------------------<
 
     //Define pair list container
     this.m_pairlist = new int[2*ncells*ncells];
 
-    //No errors
-    return true;
+    //Index for Integrator class
+    return nidx;
 };
 
 
@@ -186,13 +193,114 @@ bool Atoms::SetPairItem(int idx, int pair)
  * Set cell data by index
  * ___________________________________________________________________________________
  */
-bool Atoms::SetCellData(int vecIdx, int atomIdx)
+bool Atoms::SetCellData(int cellID, int idxID, int idx)
 {
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::SetCellData(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+    if(idxID>this.m_cells[cellID].size()) {
+        std::cout << "( ERROR ) Atoms::SetCellData(): idxID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
 
-
+    //Set cell data item
+    this.m_cells[cellID][idxID] = idx;
 
     //No errors
     return true;
 };
+
+/* ######################################################################################################## */
+
+
+/**
+ * Get position of atoms by index
+ * ___________________________________________________________________________________
+ */
+double Atoms::GetPosition(int idx)
+{
+    //Check index
+    if(idx<0 || idx>(this.m_natoms-1)) {
+        std::cout << "( ERROR ) Atoms::GetPosition(): Index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_position[idx];
+};
+
+
+/**
+ * Get velocity of atoms by index
+ * ___________________________________________________________________________________
+ */
+double Atoms::GetVelocity(int idx)
+{
+    //Check index
+    if(idx<0 || idx>(this.m_natoms-1)) {
+        std::cout << "( ERROR ) Atoms::GetVelocity(): Index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_velocity[idx];
+};
+
+
+/**
+ * Get force acting on atoms by index
+ * ___________________________________________________________________________________
+ */
+double Atoms::GetForce(int idx)
+{
+    //Check index
+    if(idx<0 || idx>(this.m_natoms-1)) {
+        std::cout << "( ERROR ) Atoms::GetForce(): Index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_force[idx];
+};
+
+
+/**
+ * Get item in pair list container
+ * ___________________________________________________________________________________
+ */
+int Atoms::GetPairItem(int idx)
+{
+    //Check index
+    if(idx<0 || idx>(2*this.m_ncells*this.m_ncells-1)) {
+        std::cout << "( ERROR ) Atoms::GetPairItem(): Index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_pairlist[idx];
+};
+
+
+/**
+ * Get cell data by index
+ * ___________________________________________________________________________________
+ */
+int Atoms::GetCellData(int cellID, int idxID)
+{
+    //Sanity checks
+    if(cellID>this.m_cells.size()) {
+        std::cout << "( ERROR ) Atoms::GetCellData(): cellID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+    if(idxID>this.m_cells[cellID].size()) {
+        std::cout << "( ERROR ) Atoms::GetCellData(): idxID index out-of-bound. Abort!" << std::endl;
+        return false;
+    }
+
+    return this.m_cells[cellID][idxID];
+};
+
+
+
+
+
 
 

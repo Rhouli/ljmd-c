@@ -100,6 +100,13 @@ class Atoms {
     inline void SetNPairs(int npairs) { this.m_npairs = npairs; };
 
     /**
+     * Set number of cells (reserve memory: cells, pairlist)
+     * @param ncells Number of cells
+     * @return nidx for integrator class
+     */
+    const int SetNCells(int ncells);
+
+    /**
      * Set item in pair list container
      * @param idx Container index
      * @param pair Pair index
@@ -108,19 +115,13 @@ class Atoms {
     static const bool SetPairItem(int idx, int pair);
 
     /**
-     * Set number of cells (reserve memory: cells, pairlist)
-     * @param ncells Number of cells
-     * @return Standard error code
-     */
-    static const bool SetNCells(int ncells);
-
-    /**
      * Set cell data by index
-     * @param vecIdx  Index of cell container
-     * @param atomIdx Index of atom
+     * @param cellID Index of cell container
+     * @param idxID Index of atom
+     * @param idx Index
      * @return Standard error code
      */
-    static const bool SetCellData(int vecIdx, int atomIdx);
+    static const bool SetCellData(int cellID, int idxID, int idx);
 
     /* ################################################################################################# */
 
@@ -202,10 +203,11 @@ class Atoms {
 
     /**
      * Get cell data by index
-     * @param vecIdx  Index of cell container
+     * @param cellID  Index of cell container
+     * @param idxID   Index of idx container
      * @return Index of atom
      */
-    const int GetCellData(int vecIdx);
+    const int GetCellData(int cellID, int idxID);
 
     private:
         /**
