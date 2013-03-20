@@ -28,7 +28,7 @@ static void Pair_LJ::ComputeForce(Atom *sys)
 #endif
   {
         double c12,c6,boxby2,rcsq;
-        double *fx, *fy, *fz;
+        double *f;
         const double *rx, *ry, *rz;
         int i, tid, fromidx, toidx, natoms;
 	
@@ -47,7 +47,9 @@ static void Pair_LJ::ComputeForce(Atom *sys)
 #else
         tid=0;
 #endif
-        fx=sys->frc + (3*tid*natoms);
+        f=sys->getForceArray;
+	fx=f + (3*tid*natoms);
+	fx=sys->frc;
         azzero(fx,3*natoms);
         fy=sys->frc + ((3*tid+1)*natoms);
         fz=sys->frc + ((3*tid+2)*natoms);
@@ -164,7 +166,7 @@ static void Pair_LJ::ComputeForce(Atom *sys)
 #pragma omp barrier
 #endif
         /* set equal chunks of index ranges */
-        i = 1 + (3*natoms / sys->nthreads);
+        i = 1 + (3*sys->natoms / sys->nthreads);
         fromidx = tid * i;
         toidx = fromidx + i;
         if (toidx > 3*natoms) toidx = 3*natoms;
@@ -178,9 +180,9 @@ static void Pair_LJ::ComputeForce(Atom *sys)
             offs = 3*i*natoms;
 
             for (j=fromidx; j < toidx; ++j) {
-                sys->frc[j] += sys->frc[offs+j];
+                sys->SetForce(j, sys->GetForce(j)+sys->GetForce(offs+j));
             }
         }
   }
-  sys->epot = epot;
+  sys->SetPotEnergy(epot);
 }
