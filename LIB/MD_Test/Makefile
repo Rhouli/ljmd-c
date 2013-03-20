@@ -9,13 +9,15 @@ GCC = g++
 
 # ALl tests to be produced
 TESTS =	test_pair_LJ
-MYMD_SRC_DIR = 	../../SRC
-MYMD_INC_DIR = 	../../INC
+TESTS_SRC = $(TESTS:%=%.cpp)
+MYMD_DIR = ../..
+MYMD_SRC_DIR = 	$(MYMD_DIR)/SRC
+MYMD_INC_DIR = 	$(MYMD_DIR)/INC
 USER_DIR = ..
 LINKFLAGS =	-o
+INC_DIR = INC
 
-INCLUDE = -I $(INC_DIR) -I $(MYMD_INC_DIR) -I $(GTEST_INC_DIR)
-EXTRA_LIBS = -I${GTEST}
+INCLUDE = -I$(INC_DIR) -I$(MYMD_INC_DIR) -I$(GTEST)
 
 ####################################
 ###*********GOOGLE TEST**********###
@@ -38,25 +40,34 @@ GTEST_HEADERS_DIR = $(GTEST_DIR)/include/gtest
 		$(GTEST_DIR)/include/gtest/internal
 
 ####################################
+###*********ARCHIVE INFO*********###
+####################################
+
+AR = ar
+ARFLAGS = rcsv 
+MD_OBJ = $(MYMD_DIR)/Obj-serial.x
+
+####################################
 ###*********COMPILATION**********###
 ####################################
 
 default: ${TESTS}
 
-test_pair_LJ: test_pair_LJ.o
-
 cleanAll:
 	rm -rf ${TESTS} gtest.a gtest_main.a *.o 
 
-.depend: $(SRC_MAT)
-	$(GCC) -MM -I $(INCDOR) $^ > $@
+.depend: $(TESTS_SRC)
+	$(GCC) -MM $(INCLUDE) $^ > $@
 
 # Create Object File
 %.o: %.cpp
-	$(GCC) ${GCCFLAGS} $(EXTRA_LIBS) -o $@ -c $< $(INCLUDE)
+	$(GCC) ${GCCFLAGS} -o $@ -c $<
+
+libmymd.a: $(MD_OBJ)
+	$(AR) $(ARFLAGS) $@ $^
 
 # Compile program
-%: %.o GTest/gtest_main.a  GTest/gtest.a
-	$(GCC) $^ -lpthread ${LINKFLAGS} $@
+%: %.o $(GTEST)/gtest_main.a  $(GTEST)/gtest.a libmymd.a
+	$(GCC) -o $@ ${LINKFLAGS} $^ 
 
 sinclude .depend
