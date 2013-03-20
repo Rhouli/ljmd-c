@@ -10,15 +10,20 @@
         http://www.python.org/getit/
 
  2) If not present, install the Atomistic Simulation Environment
+    The python frontend has been tested against ASE 3.6.1.3017
+    
     For the trunk (development) version do
 
         svn checkout https://svn.fysik.dtu.dk/projects/ase/trunk ase
-
-    ASE does not need to be built, but it makes sense to copy the
-    package to your python package repository:
-        
         cd ase
         sudo python setup.py build install
+
+    ASE does not need to be built, but it makes sense to copy the
+    package to your python package repository.
+
+    Note: The optional built-in viewer of ASE uses pygtk, which can be difficult
+          to obtain on some platforms (on MacOS X you can use macports).
+        
 
  3) Add the MyMD module to ASE
   
