@@ -19,7 +19,7 @@ Force::~Force(){
  free(pot);
 }
 
-void Force::ComputeForce(Atom* atom){
+void Force::ComputeForce(Atoms* atom){
  if(!strcmp(pot,"PAIR")){
   pair->ComputeForce(atom);
  }

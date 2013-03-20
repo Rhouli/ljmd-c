@@ -8,8 +8,6 @@
 #ifndef MD_HELPER_H
 #define MD_HELPER_H
 
-public:
-
 /**
  * read a line and then return
  *  the first string with whitespace stripped off

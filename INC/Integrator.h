@@ -10,7 +10,7 @@
 
 //Includes
 #include <math.h>
-#include "Atom.h"
+#include "Atoms.h"
 #include "Force.h"
 
 class Integrator {
@@ -32,7 +32,7 @@ class Integrator {
      * @param Pointer to force class
      * @return Standard error code
      */
-    static bool Init(Atom *atom, Force *force);
+    static bool Init(Atoms *atom, Force *force);
 
     /**
      * Calculate Kinetic Energy
@@ -55,44 +55,44 @@ class Integrator {
     /**
      * Set time step
      */
-    inline void SetTimestep(double timestep) { this.m_timestep = timestep; };
+    inline void SetTimestep(double timestep) { this->m_timestep = timestep; };
 
     /**
      * Set grid layout
      */
-    inline void SetNGrid(int ngrid) { this.m_ngrid = ngrid; };
+    inline void SetNGrid(int ngrid) { this->m_ngrid = ngrid; };
 
     /**
      * Set size of items in cell container
      */
-    inline void SetNIdx(int nidx) { this.m_idx = idx; };
+    inline void SetNIdx(int nidx) { this->m_nidx = nidx; };
 
     /**
      * Set Delta
      */
-    inline void SetDelta(double delta) { this.m_delta = delta; };
+    inline void SetDelta(double delta) { this->m_delta = delta; };
 
     /* ################################################################################ */
 
     /**
      * Get time step
      */
-    const double GetTimestep() { return this.m_timestep; };
+    const double GetTimestep() { return this->m_timestep; };
 
     /**
      * Get grid layout
      */
-    const int GetNGrid() { return this.m_ngrid; };
+    const int GetNGrid() { return this->m_ngrid; };
 
     /**
      * Get size of items in cell container
      */
-    const int GetNIdx() { return this.m_idx; };
+    const int GetNIdx() { return this->m_nidx; };
 
     /**
      * Get Delta
      */
-    const double GetDelta() { return this.m_delta; };
+    const double GetDelta() { return this->m_delta; };
     
     /** 
      * Helper function: apply minimum image convention
@@ -109,7 +109,7 @@ class Integrator {
         /**
          * Pointer to atoms
          */
-        Atom *m_atom;
+        Atoms *m_atom;
 
         /**
          * Pointer to forces

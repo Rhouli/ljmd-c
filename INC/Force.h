@@ -16,7 +16,7 @@
 //#include "Helper.h"
 
 //Includes (TODO)
-#include "Atom.h"
+#include "Atoms.h"
 #include "Pair.h"
 
 class Force {  
@@ -38,7 +38,7 @@ class Force {
    * @param Pointer to atom class
    * @return Standard error code
    */
-  static void ComputeForce(Atom* atom);
+  static void ComputeForce(Atoms* atom);
   
   /**
    * Calculate different kinds of pair-potentials

@@ -37,19 +37,19 @@ class Atoms {
      * Set mass
      * @param mass of atoms
      */
-    inline void SetMass(double mass) { this.m_mass = mass; };
+    inline void SetMass(double mass) {this->m_mass = mass; };
 
     /**
      * Set kinetic energy
      * @param energy of atoms
      */
-    inline void SetKinEnergy(double energy) { this.m_kinenergy = energy; };
+    inline void SetKinEnergy(double energy) { this->m_kinenergy = energy; };
 
     /**
      * Set potential energy
      * @param energy of atoms
      */
-    inline void SetPotEnergy(double energy) { this.m_potenergy = energy; };
+    inline void SetPotEnergy(double energy) { this->m_potenergy = energy; };
 
     /**
      * Set position of atoms by index
@@ -79,25 +79,25 @@ class Atoms {
      * Set temperature
      * @param temperature
      */
-    inline void SetTemp(double temp) { this.m_temperature = temp; };
+    inline void SetTemp(double temp) { this->m_temperature = temp; };
 
     /**
      * Set radial cutoff value
      * @param radcut cutoff
      */
-    inline void SetRadCut(double radcut) { this.m_radcut = radcut; };
+    inline void SetRadCut(double radcut) { this->m_radcut = radcut; };
 
     /**
      * Set box size
      * @param box size
      */
-    inline void SetBoxSize(double boxsize) { this.m_boxsize = boxsize; };
+    inline void SetBoxSize(double boxsize) { this->m_boxsize = boxsize; };
 
     /**
      * Set number of pairs
      * @param npairs Number of pairs
      */
-    inline void SetNPairs(int npairs) { this.m_npairs = npairs; };
+    inline void SetNPairs(int npairs) { this->m_npairs = npairs; };
 
     /**
      * Set number of cells (reserve memory: cells, pairlist)
@@ -138,7 +138,7 @@ class Atoms {
      * Get number of atoms
      * @return number of atoms
      */
-    inline int GetNAtoms() { return this.m_natoms; };
+    inline int GetNAtoms() { return this->m_natoms; };
 
     /**
      * Get mass
@@ -169,7 +169,7 @@ class Atoms {
      * Get position of atoms by index
      * @return Position array of atoms
      */
-    inline double* GetPosition() { return this.m_position; };
+    inline double* GetPosition() { return this->m_position; };
  
     /**
      * Get velocity of atoms by index
@@ -182,7 +182,7 @@ class Atoms {
      * Get velocity of atoms by index
      * @return Velocity array of atoms
      */
-    inline double* GetVelocity() { return this.m_velocity; };
+    inline double* GetVelocity() { return this->m_velocity; };
 
     /**
      * Get force acting on atoms by index
@@ -195,31 +195,31 @@ class Atoms {
      * Get force array acting on atoms
      * @return Force array
      */
-    inline double* GetForce() { return this.m_force; };
+    inline double* GetForce() { return this->m_force; };
 
     /**
      * Get temperature
      * @return temperature
      */
-    inline double GetTemp() { return this.m_temperature; };
+    inline double GetTemp() { return this->m_temperature; };
 
     /**
      * Get radial cutoff value
      * @return radcut cutoff
      */
-    inline double GetRadCut() { return this.m_radcut; };
+    inline double GetRadCut() { return this->m_radcut; };
 
     /**
      * Get box size
      * @return box size
      */
-    inline double GetBoxSize() { return this.m_boxsize; };
+    inline double GetBoxSize() { return this->m_boxsize; };
 
     /**
      * Get number of pairs
      * @return npairs Number of pairs
      */
-    inline int GetNPairs() { return this.m_npairs; };
+    inline int GetNPairs() { return this->m_npairs; };
 
     /**
      * Get item in pair list container
@@ -232,7 +232,7 @@ class Atoms {
      * Get number of cells
      * @return Number of cells
      */
-    inline int GetNCells() { return this.m_ncells; };
+    inline int GetNCells() { return this->m_ncells; };
 
     /**
      * Get cell index by index

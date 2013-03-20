@@ -9,7 +9,7 @@
 #define MD_PAIR_H
 
 //Includes (TODO)
-#include "Force.h"
+#include "Atoms.h"
 #include "Pair_LJ.h"
 
 class Pair {
@@ -35,7 +35,7 @@ class Pair {
      * @param Pointer to atom class
      * @return Standard error code
      */
-    void ComputeForce(Atom *atom);
+    void ComputeForce(Atoms *atom);
     class Pair_LJ* LJ;
 //    class Morse* Pair_Morse;
     char *pot_type;

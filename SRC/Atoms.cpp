@@ -4,7 +4,7 @@
  * @short This class provides an abstract summary of all atoms in the system
  * @authors Maksim Markov <maxmarkov@gmail.com>, Manuel Proissl <mproissl@cern.ch>
  */
-
+#include "Atoms.h"
 
 static const double _def_ = -999;
 

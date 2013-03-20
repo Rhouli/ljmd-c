@@ -3,7 +3,7 @@
 
 #include "Integrator.h"
 #include "Force.h"
-#include "Atom.h"
+#include "Atoms.h"
 #include "Helper.h"
 
 /* generic file- or pathname buffer length */
@@ -14,7 +14,7 @@ const int cellfreq=4;
 class MyMD {
   public:
     /* Variables */
-    Atom *atom;
+    Atoms *atoms;
     Force *force;
     Integrator *integrator;
    
@@ -27,14 +27,14 @@ class MyMD {
     FILE *erg, *traj;
 
     /* Methods */
-    void MyMD();
-    void ~MyMD();
+    MyMD();
+    ~MyMD();
     void MDLoop();
   private:
     void readInput();
     void allocateMemory();
-    void readRestart():
+    void readRestart();
     void output();
-}
+};
 
 #endif

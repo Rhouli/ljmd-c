@@ -1,7 +1,10 @@
 /******************************************************************************/
+#include "MyMD.h"
+
+
 /* Constructor. */
 
-void MyMD::MyMD() {
+MyMD::MyMD() {
 
 /* Obtain the number of threads. */
 #if defined(_OPENMP)
@@ -20,11 +23,6 @@ void MyMD::MyMD() {
   readInput();
   allocateMemory();
 
-  /* Allocate memory for position, velocity and force vectors. */
-  atoms->pos = (double *) malloc(3*atoms->natoms*sizeof(double));
-  atoms->vel = (double *) malloc(3*atoms->natoms*sizeof(double));
-  atoms->frc = (double *) malloc(nthreads*3*atoms->natoms*sizeof(double));
- 
   /* Load initial position and velocity. */ 
   readRestart();
 
@@ -34,14 +32,14 @@ void MyMD::MyMD() {
 
   /* Initializes forces and energies. */
   nfi = 0;
-  force->force(&atoms);
+  force->ComputeForce(atoms);
   ekin(&atoms);
 }
 
 /******************************************************************************/
 /* Destructor. */
 
-void MyMD::~MyMD() {
+MyMD::~MyMD() {
   delete atoms;
   delete force;
   delete integrator;
@@ -132,7 +130,7 @@ void MyMD::readRestart() {
 /* Allocate classes memory. */
 
 void MyMD::allocateMemory() {
-  atom = new Atom();
+  atoms = new Atoms();
   force = new Force;
   integrator = new Integrator;
 }

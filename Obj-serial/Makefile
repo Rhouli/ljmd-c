@@ -10,9 +10,9 @@ CFLAGS=-Wall -g -O3 -ffast-math -fomit-frame-pointer
 LDLIBS=-lm
 
 # list of source files
-SRC_MAT= MyMD.cpp Helper.cpp Force.cpp Atom.cpp Integrator.cpp Pair.cpp Pair_LJ.cpp
-INC_MAT= $(SRC:%.cpp=%.h)
-OBJ=$(SRC:%.cpp=%.o)
+SRC_MAT= MyMD.cpp Helper.cpp Force.cpp Atoms.cpp Integrator.cpp Pair.cpp Pair_LJ.cpp run.cpp
+INC_MAT= $(SRC_MAT:%.cpp=%.h)
+OBJ=$(SRC_MAT:%.cpp=%.o)
 
 SRCDIR=../SRC
 INCDIR=../INC

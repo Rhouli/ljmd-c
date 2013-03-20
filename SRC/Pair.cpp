@@ -19,7 +19,7 @@ Pair::~Pair(){
   free(pot_type);
 }
 
-void Pair::ComputeForce(Atom *atom){
+void Pair::ComputeForce(Atoms *atom){
  if(!strcmp(pot_type,"LJ")){
     LJ->ComputeForce(atom);
  }

@@ -18,7 +18,7 @@ Pair_LJ::Pair_LJ(){
 		sigma=s;
 	}
 
-static void Pair_LJ::ComputeForce(Atom *atom) 
+static void Pair_LJ::ComputeForce(Atoms *atom) 
 {
     double epot;
     

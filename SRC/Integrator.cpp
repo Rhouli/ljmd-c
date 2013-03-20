@@ -36,11 +36,11 @@ Integrator::~Integrator()
 /**
  * Init
  */
-bool Init(Atom *atom, Force *force)
+bool Init(Atoms *atom, Force *force)
 {
     //Set pointers
     if(!atom) {
-        std::cerr << "( ERROR ) Atom null pointer... Abort Init!" << std::endl; 
+        std::cerr << "( ERROR ) Atoms null pointer... Abort Init!" << std::endl; 
         return false;
     }
     else this.m_atom  = atom;

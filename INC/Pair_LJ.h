@@ -8,7 +8,7 @@
 #ifndef MD_PAIR_LJ_H
 #define MD_PAIR_LJ_H
 
-#include "Pair.h"
+#include "Atoms.h"
 
 class Pair_LJ {  
  public:
@@ -28,7 +28,7 @@ class Pair_LJ {
    * Force computer
    * @return Standard error code
    */
-  void ComputeForce(Atom *atom);
+  void ComputeForce(Atoms *atom);
   
   /* variables */
   double sigma,epsilon;
