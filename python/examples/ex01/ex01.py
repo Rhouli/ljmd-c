@@ -4,6 +4,7 @@ This example demonstrates how to set up a collection
 of atoms within ASE and how to use a MyMD calculator
 to run a MD simulation on these atoms.
 """
+
 from ase.lattice.cubic import SimpleCubic
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
 import ase.units as units
@@ -20,14 +21,12 @@ calc  = mymd.FileIOMyMD(label='mymd',
                   nsteps=10000,
                   dt=2.0,
                   nprint=100)
-myatoms.set_calculator(calc)
 
-# Get the total energy at the end of the run
-etot = myatoms.get_total_energy()
-print "The total energy is {} [unit] per atom".format(etot/len(myatoms))
+# Run calculation and read results
+calc.run_md(myatoms)
 
-# If the pygtk module is available, you can use the
-# built-in ASE viewer to visualize the atoms
+# Compare initial with final temperature
+temp = calc.frames.collect('temp')
 
-#from ase.visualize import view
-#view(myatoms)
+print "Initial temperature: {} K".format(temp[0])
+print "Final temperature: {} K".format(temp[1])

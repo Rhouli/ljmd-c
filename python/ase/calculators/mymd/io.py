@@ -4,6 +4,8 @@ Handles reading and writing of restart files
 """ 
 import numpy as np
 from cStringIO import StringIO
+from ase.atoms import Atoms 
+from ase.parallel import paropen 
 
 def read_restart(filename):
     """ Read a MyMD restart file.
@@ -43,16 +45,6 @@ def read_restart(filename):
    
     return atomlist
 
-def read_trajectory(filename):
-    from ase import Atoms
-    from ase.io.xyz import read_xyz
-
-    # only stores last trajectory apparently
-    # need to extend it to read full traj
-    atomlist = read_xyz(filename)
-    return atomlist
-
-
 def write_restart(filename, atoms, geometry=None):
     """Write restart info from atoms to file"""
 
@@ -68,3 +60,44 @@ def write_restart(filename, atoms, geometry=None):
     f = open(filename, 'w')
     f.write(s)
     f.close()
+
+def read_xyz(fileobj, index=None): 
+    """ Reads a trajectory from an xyz file.
+
+    This function returns a list of ase.atoms.Atoms objects.
+    The original ase.io.xyz.read_xyz function was only capable
+    of returning a single Atoms object.
+    """
+    if isinstance(fileobj, str): 
+        fileobj = open(fileobj) 
+ 
+    lines = fileobj.readlines() 
+    L1 = lines[0].split() 
+    if len(L1) == 1: 
+        del lines[:2] 
+        natoms = int(L1[0]) 
+    else: 
+        natoms = len(lines) 
+
+    images = [] 
+    while len(lines) >= natoms: 
+        positions = [] 
+        symbols = [] 
+        for line in lines[:natoms]: 
+            symbol, x, y, z = line.split()[:4] 
+            symbol = symbol.lower().capitalize() 
+            symbols.append(symbol) 
+            positions.append([float(x), float(y), float(z)]) 
+        images.append(Atoms(symbols=symbols, positions=positions)) 
+        del lines[:natoms + 2] 
+
+    if index is None:
+        return images
+    else:
+        return images[index]
+
+def read_trajectory(filename):
+    return read_xyz(filename)
+
+
+

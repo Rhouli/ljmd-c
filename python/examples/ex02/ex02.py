@@ -1,6 +1,6 @@
 """ Example 02
 
-This example demonstrates how to restart a previous
+This example demonstrates how to restart from a previous
 MyMD calculation.
 """
 import ase.calculators.mymd as mymd
