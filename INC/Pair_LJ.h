@@ -17,7 +17,10 @@ class Pair_LJ {
    * Default constructor
    * @param Pointer to atom class
    */
-  Pair_LJ(double epsilon, double sigma);
+  Pair_LJ(double _epsilon, double _sigma){
+    epsilon = _epsilon;
+    sigma = _sigma;
+  };
     
   /**
    * Default destructor

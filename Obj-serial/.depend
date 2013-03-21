@@ -1,0 +1,13 @@
+MyMD.o: ../SRC/MyMD.cpp ../INC/MyMD.h ../INC/Integrator.h ../INC/Atoms.h \
+ ../INC/Force.h ../INC/Pair.h ../INC/Pair_LJ.h ../INC/Helper.h
+Helper.o: ../SRC/Helper.cpp ../INC/Helper.h
+Force.o: ../SRC/Force.cpp ../INC/Force.h ../INC/Atoms.h ../INC/Pair.h \
+ ../INC/Pair_LJ.h
+Atoms.o: ../SRC/Atoms.cpp ../INC/Atoms.h
+Integrator.o: ../SRC/Integrator.cpp ../INC/Integrator.h ../INC/Atoms.h \
+ ../INC/Force.h ../INC/Pair.h ../INC/Pair_LJ.h
+Pair.o: ../SRC/Pair.cpp ../INC/Pair.h ../INC/Atoms.h ../INC/Pair_LJ.h
+Pair_LJ.o: ../SRC/Pair_LJ.cpp ../INC/Pair_LJ.h ../INC/Atoms.h \
+ ../INC/Helper.h
+run.o: ../SRC/run.cpp ../INC/MyMD.h ../INC/Integrator.h ../INC/Atoms.h \
+ ../INC/Force.h ../INC/Pair.h ../INC/Pair_LJ.h ../INC/Helper.h

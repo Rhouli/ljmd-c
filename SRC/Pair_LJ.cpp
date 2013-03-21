@@ -6,19 +6,13 @@
  */
 
 #include "Pair_LJ.h"
-
+#include "Helper.h"
+#include <math.h>
 #if defined(_OPENMP)
 #include <omp.h>
 #endif
 
-/* construction */
-Pair_LJ::Pair_LJ(){
-	Pair_LJ(double e, double s) {
-		epsilon=e;
-		sigma=s;
-	}
-
-static void Pair_LJ::ComputeForce(Atoms *atom) 
+void Pair_LJ::ComputeForce(Atoms *atom) 
 {
     double epot;
     
@@ -28,7 +22,7 @@ static void Pair_LJ::ComputeForce(Atoms *atom)
     {
         double c12,c6,boxby2,rcsq;
         double *fx, *fy, *fz;
-        const double *rx, *ry, *rz;
+        double *rx, *ry, *rz;
         int i, tid, fromidx, toidx, natoms, nthreads;
 
         /* precompute some constants */
@@ -55,36 +49,36 @@ static void Pair_LJ::ComputeForce(Atoms *atom)
         rx=atom->GetPosition();
         ry=atom->GetPosition() + natoms;
         rz=atom->GetPosition() + 2*natoms;
-
+	int x;
         /* self interaction of atoms in cell */
         for(i=0; i < atom->GetNCells(); i += nthreads) {
             int j;
-            const cell_t *c1;
+	    //            cell_t *c1;
             
             x = i + tid;
             if (j >= (atom->GetNCells())) break;
 //            c1=atom->clist + j;
-            afc=getlist(j) 
-            for (j=0; j < atom->GetCellSize(x)-1; ++j) {
+//            afc=getlist(j) 
+            for (j=0; j < atom->GetCellIndexSize(x)-1; ++j) {
 //	    for (j=0; j < GetCellData()-1; ++j) {  
                 int ii,k;
                 double rx1, ry1, rz1;		
  //               ii=c1->idxlist[j];
-		ii=atom->GetCellData(x,j)
+		ii=atom->GetCellIndex(x,j);
 		
                 rx1=rx[ii];
                 ry1=ry[ii];
                 rz1=rz[ii];
         
-                for(k=j+1; k < atom->GetCellSize(x); ++k) {
+                for(k=j+1; k < atom->GetCellIndexSize(x); ++k) {
                     int jj;
                     double rx2,ry2,rz2,rsq;
 
-		    jj=atom->GetCellData(x,k) 
+		    jj=atom->GetCellIndex(x,k); 
                     /* get distance between particle i and j */
-                    rx2=pbc(rx1 - rx[jj], boxby2, atom->box);
-                    ry2=pbc(ry1 - ry[jj], boxby2, atom->box);
-                    rz2=pbc(rz1 - rz[jj], boxby2, atom->box);
+                    rx2=pbc(rx1 - rx[jj], boxby2, atom->GetBoxSize());
+                    ry2=pbc(ry1 - ry[jj], boxby2, atom->GetBoxSize());
+                    rz2=pbc(rz1 - rz[jj], boxby2, atom->GetBoxSize());
                     rsq = rx2*rx2 + ry2*ry2 + rz2*rz2;
 
                     /* compute force and energy if within cutoff */
@@ -109,36 +103,36 @@ static void Pair_LJ::ComputeForce(Atoms *atom)
         }    
 
         /* interaction of atoms in different cells */
-        for(i=0; i < atom->GetNPair(); i += atom->nthreads) {
+        for(i=0; i < atom->GetNPairs(); i += nthreads) {
             int j;
-            const cell_t *c1, *c2;
+	    //            const cell_t *c1, *c2;
 
             x = i + tid;
-            if (x >= (atom->GetNPair())) break;
+            if (x >= (atom->GetNPairs())) break;
 	  
         //    c1=atom->clist + atom->plist[2*x];
         //    c2=atom->clist + atom->plist[2*x+1];
         
-            for (j=0; j < atom->GetCellSize(atom->GetPairItem(2*x)); ++j) {
+            for (j=0; j < atom->GetCellIndexSize(atom->GetPairItem(2*x)); ++j) {
                 int ii, k;
                 double rx1, ry1, rz1;
 
-                ii=atom->GetCellData(atom->GetPairItem(2*x),j);
+                ii=atom->GetCellIndex(atom->GetPairItem(2*x),j);
                 rx1=rx[ii];
                 ry1=ry[ii];
                 rz1=rz[ii];
         
-                for(k=0; k < atom->GetCellSize(atom->GetPairItem(2*x+1)); ++k) {
+                for(k=0; k < atom->GetCellIndexSize(atom->GetPairItem(2*x+1)); ++k) {
                     int jj;
                     double rx2,ry2,rz2,rsq;
                 
                    // jj=c2->idxlist[k];
 		    
-		    jj = atom->GetCellData(atom->GetPairItem(2*x+1),k);
+		    jj = atom->GetCellIndex(atom->GetPairItem(2*x+1),k);
                     /* get distance between particle i and j */
-                    rx2=pbc(rx1 - rx[jj], boxby2, atom->box);
-                    ry2=pbc(ry1 - ry[jj], boxby2, atom->box);
-                    rz2=pbc(rz1 - rz[jj], boxby2, atom->box);
+                    rx2=pbc(rx1 - rx[jj], boxby2, atom->GetBoxSize());
+                    ry2=pbc(ry1 - ry[jj], boxby2, atom->GetBoxSize());
+                    rz2=pbc(rz1 - rz[jj], boxby2, atom->GetBoxSize());
                     rsq = rx2*rx2 + ry2*ry2 + rz2*rz2;
                 
                     /* compute force and energy if within cutoff */
@@ -190,4 +184,4 @@ static void Pair_LJ::ComputeForce(Atoms *atom)
     atom->SetPotEnergy(epot);
 }
 
-}
+

@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include "Helper.h"
+
 /**
  * Header of the Helper 
  *
@@ -13,7 +18,7 @@
  * @param Pointer to a char buffer
  * @return void
  */
-static int get_a_line(FILE *fp, char *buf)
+extern "C" int get_a_line(FILE *fp, char *buf)
 {
     char tmp[BLEN], *ptr;
 
@@ -46,8 +51,8 @@ static int get_a_line(FILE *fp, char *buf)
  * @param size of an array
  * @return void
  */
-__attribute__((always_inline))
-static void azzero(double *d, const int n)
+//__attribute__((always_inline))
+void azzero(double *d, const int n)
 {
     int i;
     for (i=0; i<n; ++i) {
@@ -62,8 +67,8 @@ static void azzero(double *d, const int n)
  * @param double value of box
  * @return The modified double which was given as the first parameter
  */
-__attribute__((always_inline,pure))
-static double pbc(double x, const double boxby2, const double box)
+//__attribute__((always_inline,pure))
+double pbc(double x, const double boxby2, const double box)
 {
     while (x >  boxby2) x -= box;
     while (x < -boxby2) x += box;

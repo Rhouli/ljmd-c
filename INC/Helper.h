@@ -8,6 +8,9 @@
 #ifndef MD_HELPER_H
 #define MD_HELPER_H
 
+/* generic file- or pathname buffer length */
+#define BLEN 200
+
 /**
  * read a line and then return
  *  the first string with whitespace stripped off
@@ -15,7 +18,7 @@
  * @param Pointer to a char buffer
  * @return void
  */
-static int get_a_line(FILE *fp, char *buf);
+extern "C" int get_a_line(FILE *fp, char *buf);
 
 /**
  * Zero out an array
@@ -23,8 +26,8 @@ static int get_a_line(FILE *fp, char *buf);
  * @param size of an array
  * @return void
  */
-__attribute__((always_inline))
-static void azzero(double *d, const int n);
+//__attribute__((always_inline))
+void azzero(double *d, const int n);
 
 /**
  * Apply minimum image convention
@@ -33,8 +36,8 @@ static void azzero(double *d, const int n);
  * @param double value of box
  * @return The modified double which was given as the first parameter
  */
-__attribute__((always_inline,pure))
-static double pbc(double x, const double boxby2, const double box);
+//__attribute__((always_inline,pure))
+double pbc(double x, const double boxby2, const double box);
 
 #endif //> !class
 

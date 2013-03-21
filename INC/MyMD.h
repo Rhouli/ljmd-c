@@ -6,10 +6,9 @@
 #include "Atoms.h"
 #include "Helper.h"
 
-/* generic file- or pathname buffer length */
-#define BLEN 200
+
 /* number of MD steps between cell list updates */
-const int cellfreq=4;
+#define cellfreq 4
 
 class MyMD {
   public:
@@ -30,8 +29,9 @@ class MyMD {
     MyMD();
     ~MyMD();
     void MDLoop();
+
   private:
-    void readInput();
+    bool readInput();
     void allocateMemory();
     void readRestart();
     void output();

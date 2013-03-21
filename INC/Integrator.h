@@ -17,7 +17,7 @@ class Integrator {
 
     public:
     /**
-     * Default constructor
+     * Default ructor
      */
     Integrator();
 
@@ -32,25 +32,25 @@ class Integrator {
      * @param Pointer to force class
      * @return Standard error code
      */
-    static bool Init(Atoms *atom, Force *force);
+     bool Init(Atoms *atom, Force *force);
 
     /**
      * Calculate Kinetic Energy
      * @return Standard error code
     */
-    static const bool CalcKinEnergy();
+      bool CalcKinEnergy();
 
     /**
      * Calculate Velocity
      * @return Standard error code
     */
-    static const bool CalcVelocity();
+      bool CalcVelocity();
 
     /**
      * Update cells
      * @return Standard error code
     */
-    static const bool UpdateCells();
+      bool UpdateCells();
 
     /**
      * Set time step
@@ -77,28 +77,28 @@ class Integrator {
     /**
      * Get time step
      */
-    const double GetTimestep() { return this->m_timestep; };
+     double GetTimestep() { return this->m_timestep; };
 
     /**
      * Get grid layout
      */
-    const int GetNGrid() { return this->m_ngrid; };
+     int GetNGrid() { return this->m_ngrid; };
 
     /**
      * Get size of items in cell container
      */
-    const int GetNIdx() { return this->m_nidx; };
+     int GetNIdx() { return this->m_nidx; };
 
     /**
      * Get Delta
      */
-    const double GetDelta() { return this->m_delta; };
+     double GetDelta() { return this->m_delta; };
     
     /** 
      * Helper function: apply minimum image convention
      * @return convention
      */
-    inline double pbc(double x, const double boxby2, const double box)
+    inline double pbc(double x,  double boxby2,  double box)
     {
         while (x >  boxby2) x -= box;
         while (x < -boxby2) x += box;

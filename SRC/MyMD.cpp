@@ -1,27 +1,26 @@
 /******************************************************************************/
 #include "MyMD.h"
 
+ /* Constructor. */
 
-/* Constructor. */
+ MyMD::MyMD() {
 
-MyMD::MyMD() {
+ /* Obtain the number of threads. */
+ #if defined(_OPENMP)
+ #pragma omp parallel
+     {
+	 if(0 == omp_get_thread_num()) {
+	     nthreads=omp_get_num_threads();
+	     printf("Running OpenMP version using %d threads\n", nthreads);
+	 }
+     }
+ #else
+     nthreads=1;
+ #endif
 
-/* Obtain the number of threads. */
-#if defined(_OPENMP)
-#pragma omp parallel
-    {
-        if(0 == omp_get_thread_num()) {
-            nthreads=omp_get_num_threads();
-            printf("Running OpenMP version using %d threads\n", nthreads);
-        }
-    }
-#else
-    nthreads=1;
-#endif
-
-  /* Read input and allocate classes memory. */
-  readInput();
+   /* Read input and allocate classes memory. */
   allocateMemory();
+  readInput();
 
   /* Load initial position and velocity. */ 
   readRestart();
@@ -33,7 +32,7 @@ MyMD::MyMD() {
   /* Initializes forces and energies. */
   nfi = 0;
   force->ComputeForce(atoms);
-  ekin(&atoms);
+  integrator->CalcKinEnergy();
 }
 
 /******************************************************************************/
@@ -45,63 +44,58 @@ MyMD::~MyMD() {
   delete integrator;
 
   /* clean up: close files, free memory */
-  fclose(erg);
+  fclose(erg); 
   fclose(traj);
-  free(atoms->pos);
-  free(atoms->vel);
-  free(atoms->frc);
   printf("Simulation Done.\n");
 }
 
 /******************************************************************************/
 /* Main MD loop. */
 
-void MyMD::MyLoop() {
-  printf("Starting simulation with %d atoms for %d steps.\n",atoms.natoms, atoms.nsteps);
-  printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");
+void MyMD::MDLoop() {
   output();
-  
-  for(nfi=1; nfi <= atoms->nsteps; ++nfi) {
+  for(nfi=1; nfi <= this->nsteps; ++nfi) {
 
     /* Write output, if requested. */
     if ((nfi % nprint) == 0) output();
 
     /* Propagate atoms and recompute energies. */
-    integrator->VelVerlet(&atoms);
-    integrator->ekin(&atoms);
+    integrator->CalcVelocity();
+    integrator->CalcKinEnergy();
 
     /* Update cell list. */
     if ((nfi % cellfreq) == 0)
-          updcells(&atoms);
+      integrator->UpdateCells();
   }
 }
 
 /******************************************************************************/
 /* Read input file. */
 
-void MyMD::readInput() {
+bool MyMD::readInput() {
   char line[BLEN];
   if(get_a_line(stdin,line)) return 1;
-  atoms->natoms=atoi(line);
+  atoms->Init(atoi(line));
   if(get_a_line(stdin,line)) return 1;
-  atoms->mass=atof(line);
+  atoms->SetMass(atof(line));
   if(get_a_line(stdin,line)) return 1;
-  force->epsilon=atof(line);
+  double epsilon=atof(line);
   if(get_a_line(stdin,line)) return 1;
-  force->sigma=atof(line);
+  double sigma=atof(line);
+  force->Init("PAIR", "LJ", epsilon, sigma);  
   if(get_a_line(stdin,line)) return 1;
-  atoms->rcut=atof(line);
+  atoms->SetRadCut(atof(line));
   if(get_a_line(stdin,line)) return 1;
-  box=atof(line);
+  this->box=atof(line);
   if(get_a_line(stdin,restfile)) return 1;
   if(get_a_line(stdin,trajfile)) return 1;
   if(get_a_line(stdin,ergfile)) return 1;
   if(get_a_line(stdin,line)) return 1;
-  nsteps=atoi(line);
+  this->nsteps=atoi(line);
   if(get_a_line(stdin,line)) return 1;
-  integrator->dt=atof(line);
+  integrator->SetTimestep(atof(line));
   if(get_a_line(stdin,line)) return 1;
-  nprint=atoi(line);
+  this->nprint=atoi(line);
 }
 
 /******************************************************************************/
@@ -110,16 +104,23 @@ void MyMD::readInput() {
 void MyMD::readRestart() {
   FILE *fp=fopen(restfile,"r");
   if(fp) {
-    int natoms=atoms->natoms;
-
-    for (i=0; i<natoms; ++i) {
-      fscanf(fp,"%lf%lf%lf",atoms->pos+i, atoms->pos+natoms+i, atoms->pos+2*natoms+i);
+    int natoms=atoms->GetNAtoms();
+    double index1, index2, index3;
+    index1=index2=index3=0;
+    for(int i=0; i<natoms; ++i) {
+      fscanf(fp,"%lf%lf%lf", index1, index2, index3);
+      atoms->SetPosition(i, index1);
+      atoms->SetPosition(i+natoms, index2);
+      atoms->SetPosition(i+2*natoms, index3);
     }
-    for (i=0; i<natoms; ++i) {
-      fscanf(fp,"%lf%lf%lf",atoms->vel+i, atoms->vel+natoms+i, atoms->vel+2*natoms+i);
+    for(int i=0; i<natoms; ++i) {
+      fscanf(fp,"%lf%lf%lf", index1, index2, index3);
+      atoms->SetVelocity(i, index1);
+      atoms->SetVelocity(i+natoms, index2);
+      atoms->SetVelocity(i+2*natoms, index3);
     }
     fclose(fp);
-    azzero(atoms->frc, 3*nthreads*atoms->natoms);
+    azzero(atoms->GetForce(), 3*nthreads*natoms);
   } else {
     perror("cannot read restart file");
     exit(1);
@@ -131,8 +132,9 @@ void MyMD::readRestart() {
 
 void MyMD::allocateMemory() {
   atoms = new Atoms();
-  force = new Force;
-  integrator = new Integrator;
+  force = new Force();
+  integrator = new Integrator();
+  integrator->Init(atoms, force);
 }
 
 /******************************************************************************/
@@ -140,13 +142,16 @@ void MyMD::allocateMemory() {
 
 void MyMD::output() {
   int i, natoms;
-  natoms=atoms->natoms;
-  
-  printf("% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->temp, atoms->ekin, atoms->epot, atoms->ekin+atoms->epot);
-  fprintf(erg,"% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->temp, atoms->ekin, atoms->epot, atoms->ekin+atoms->epot);
-  fprintf(traj,"%d\n nfi=%d etot=%20.8f\n", atoms->natoms, nfi, atoms->ekin+atoms->epot);
+  natoms=atoms->GetNAtoms();
+  printf("Starting simulation with %d atoms for %d steps.\n",atoms->GetNAtoms(), nsteps);
+  printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");  
+  printf("% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->GetTemp(), atoms->GetKinEnergy(), 
+	 atoms->GetPotEnergy(), atoms->GetKinEnergy()+atoms->GetPotEnergy());
+  fprintf(erg,"% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->GetTemp(), atoms->GetKinEnergy(), 
+	  atoms->GetPotEnergy(), atoms->GetKinEnergy()+atoms->GetPotEnergy());
+  fprintf(traj,"%d\n nfi=%d etot=%20.8f\n", natoms, nfi, atoms->GetKinEnergy()+atoms->GetPotEnergy());
   for (i=0; i<natoms; ++i) {
-      fprintf(traj, "Ar  %20.8f %20.8f %20.8f\n", atoms->pos[i], atoms->pos[natoms+i], atoms->pos[2*natoms+i]);
+    fprintf(traj, "Ar  %20.8f %20.8f %20.8f\n", atoms->GetPosition(i), atoms->GetPosition(natoms+i), atoms->GetPosition(2*natoms+i));
   }
 }
 

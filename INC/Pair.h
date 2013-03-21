@@ -9,6 +9,8 @@
 #define MD_PAIR_H
 
 //Includes (TODO)
+
+#include <string.h>
 #include "Atoms.h"
 #include "Pair_LJ.h"
 
@@ -23,8 +25,8 @@ class Pair {
     /**
      * Full constructor
      */
-    Pair(char* pot_type, double arg1, double arg2);
 
+    void Init(std::string, double, double);
     /**
      * Default destructor
      */
@@ -36,9 +38,8 @@ class Pair {
      * @return Standard error code
      */
     void ComputeForce(Atoms *atom);
-    class Pair_LJ* LJ;
-//    class Morse* Pair_Morse;
-    char *pot_type;
+    Pair_LJ* LJ;
+    std::string pot_type;
 };
 
 #endif //> !class

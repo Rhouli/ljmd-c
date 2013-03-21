@@ -31,7 +31,7 @@ class Atoms {
      * @param natoms Number of atoms
      * @return Standard error code
      */
-    static const bool Init(int natoms=0);
+      bool Init(int natoms=0);
 
     /**
      * Set mass
@@ -57,7 +57,7 @@ class Atoms {
      * @param pos Position of atom
      * @return Standard error code
      */
-    static const bool SetPosition(int idx, double pos);
+      bool SetPosition(int idx, double pos);
     
     /**
      * Set velocity of atoms by index
@@ -65,7 +65,7 @@ class Atoms {
      * @param pos Velocity of atom
      * @return Standard error code
      */
-    static const bool SetVelocity(int idx, double vel);
+      bool SetVelocity(int idx, double vel);
     
     /**
      * Set force acting on atoms by index
@@ -73,7 +73,7 @@ class Atoms {
      * @param force Force acting
      * @return Standard error code
      */
-    static const bool SetForce(int idx, double force);
+      bool SetForce(int idx, double force);
 
     /**
      * Set temperature
@@ -104,7 +104,7 @@ class Atoms {
      * @param ncells Number of cells
      * @return nidx for integrator class
      */
-    const int SetNCells(int ncells);
+     int SetNCells(int ncells);
 
     /**
      * Set item in pair list container
@@ -112,7 +112,7 @@ class Atoms {
      * @param pair Pair index
      * @return Standard error code
      */
-    static const bool SetPairItem(int idx, int pair);
+      bool SetPairItem(int idx, int pair);
 
     /**
      * Set cell index by index
@@ -121,7 +121,7 @@ class Atoms {
      * @param idx Index
      * @return Standard error code
      */
-    static const bool SetCellIndex(int cellID, int idxID, int idx);
+      bool SetCellIndex(int cellID, int idxID, int idx);
 
     /**
      * Set number of atoms per cell by index
@@ -129,7 +129,7 @@ class Atoms {
      * @param natoms Number of atoms in cell
      * @return Standard error code
      */
-    static const bool SetCellNAtoms(int cellID, int natoms);
+      bool SetCellNAtoms(int cellID, int natoms);
 
 
     /* ################################################################################################# */
@@ -226,7 +226,7 @@ class Atoms {
      * @param idx Container index
      * @return Pair item index
      */
-    const int GetPairItem(int idx);
+     int GetPairItem(int idx);
 
     /**
      * Get number of cells
@@ -240,7 +240,7 @@ class Atoms {
      * @param idxID   Index of idx container
      * @return Index of atom
      */
-    const int GetCellIndex(int cellID, int idxID);
+     int GetCellIndex(int cellID, int idxID);
 
     /**
      * Get cell index vector of given index
@@ -254,14 +254,14 @@ class Atoms {
      * @param cellID  Index of cell container
      * @return Index of atom
      */
-    const int GetCellIndexSize(int cellID);
+     int GetCellIndexSize(int cellID);
 
     /**
      * Get number of atoms per cell by index
      * @param cellID Index of cell container
      * @return Number of atoms in cell
      */
-    const int GetCellNAtoms(int cellID);
+     int GetCellNAtoms(int cellID);
 
     private:
         /**

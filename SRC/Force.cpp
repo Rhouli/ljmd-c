@@ -1,26 +1,22 @@
-#include <string.h> 
 #include "Force.h"
 
 /* Full constructor */ 
-Force::Force (char* _pot, char* _pot_type, double arg1, double arg2){
- if(!strcmp(_pot,"PAIR")) {
-  pair = new Pair(_pot_type, arg1, arg2);
- }
- pot=(char*)malloc((strlen(_pot)+1)*sizeof(char));
- sprintf(pot,"%s",_pot);
+void Force::Init(std::string _pot, std::string _pot_type, double arg1, double arg2){
+  pot = _pot;
+  if(_pot=="PAIR") {
+    pair = new Pair();
+    pair->Init(_pot_type, arg1, arg2);
+  }
 }
-
 /* Deconstructor */
 Force::~Force(){
- if(!strcmp(pot,"PAIR"))
- {
-  delete pair;
- }
- free(pot);
+  if(!(pot=="PAIR")){
+    delete pair;
+  }
 }
 
-void Force::ComputeForce(Atoms* atom){
- if(!strcmp(pot,"PAIR")){
-  pair->ComputeForce(atom);
- }
+void Force::ComputeForce(Atoms *atom){
+  if(!(pot=="PAIR")){
+    pair->ComputeForce(atom);
+  }
 }
