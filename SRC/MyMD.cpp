@@ -76,6 +76,7 @@ bool MyMD::readInput() {
   char line[BLEN];
   if(get_a_line(stdin,line)) return 1;
   atoms->Init(atoi(line));
+  fprintf(stderr, "%d", atoms->GetNAtoms());
   if(get_a_line(stdin,line)) return 1;
   atoms->SetMass(atof(line));
   if(get_a_line(stdin,line)) return 1;
@@ -108,15 +109,15 @@ void MyMD::readRestart() {
     double index1, index2, index3;
     index1=index2=index3=0;
     for(int i=0; i<natoms; ++i) {
-      fscanf(fp,"%lf%lf%lf", index1, index2, index3);
+      fscanf(fp,"%lf%lf%lf", &index1, &index2, &index3);
       atoms->SetPosition(i, index1);
       atoms->SetPosition(i+natoms, index2);
       atoms->SetPosition(i+2*natoms, index3);
     }
     for(int i=0; i<natoms; ++i) {
-      fscanf(fp,"%lf%lf%lf", index1, index2, index3);
+      fscanf(fp,"%lf%lf%lf", &index1, &index2, &index3);
       atoms->SetVelocity(i, index1);
-      atoms->SetVelocity(i+natoms, index2);
+      atoms->SetVelocity(i+natoms,  index2);
       atoms->SetVelocity(i+2*natoms, index3);
     }
     fclose(fp);
@@ -151,7 +152,8 @@ void MyMD::output() {
 	  atoms->GetPotEnergy(), atoms->GetKinEnergy()+atoms->GetPotEnergy());
   fprintf(traj,"%d\n nfi=%d etot=%20.8f\n", natoms, nfi, atoms->GetKinEnergy()+atoms->GetPotEnergy());
   for (i=0; i<natoms; ++i) {
-    fprintf(traj, "Ar  %20.8f %20.8f %20.8f\n", atoms->GetPosition(i), atoms->GetPosition(natoms+i), atoms->GetPosition(2*natoms+i));
+    fprintf(traj, "Ar  %20.8f %20.8f %20.8f\n", atoms->GetPosition(i), 
+	    atoms->GetPosition(natoms+i), atoms->GetPosition(2*natoms+i));
   }
 }
 

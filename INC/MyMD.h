@@ -5,7 +5,7 @@
 #include "Force.h"
 #include "Atoms.h"
 #include "Helper.h"
-
+#include <stdio.h>
 
 /* number of MD steps between cell list updates */
 #define cellfreq 4
