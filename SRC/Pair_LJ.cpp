@@ -177,7 +177,8 @@ void Pair_LJ::ComputeForce(Atoms *atom)
 
             for (j=fromidx; j < toidx; ++j) {
   //              atom->frc[j] += atom->frc[offs+j];
-		atom->SetForce(j,atom->GetForce(j)+atom->GetForce(offs+j)); 
+	      atom->SetForce(j,atom->GetForce(j)+atom->GetForce(offs+j));
+
             }
         }
     }

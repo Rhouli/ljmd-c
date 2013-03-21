@@ -53,6 +53,8 @@ MyMD::~MyMD() {
 /* Main MD loop. */
 
 void MyMD::MDLoop() {
+  printf("Starting simulation with %d atoms for %d steps.\n",atoms->GetNAtoms(), nsteps);
+  printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");  
   output();
   for(nfi=1; nfi <= this->nsteps; ++nfi) {
 
@@ -87,7 +89,7 @@ bool MyMD::readInput() {
   if(get_a_line(stdin,line)) return 1;
   atoms->SetRadCut(atof(line));
   if(get_a_line(stdin,line)) return 1;
-  this->box=atof(line);
+  atoms->SetBoxSize(atof(line));
   if(get_a_line(stdin,restfile)) return 1;
   if(get_a_line(stdin,trajfile)) return 1;
   if(get_a_line(stdin,ergfile)) return 1;
@@ -144,8 +146,6 @@ void MyMD::allocateMemory() {
 void MyMD::output() {
   int i, natoms;
   natoms=atoms->GetNAtoms();
-  printf("Starting simulation with %d atoms for %d steps.\n",atoms->GetNAtoms(), nsteps);
-  printf("     NFI            TEMP            EKIN                 EPOT              ETOT\n");  
   printf("% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->GetTemp(), atoms->GetKinEnergy(), 
 	 atoms->GetPotEnergy(), atoms->GetKinEnergy()+atoms->GetPotEnergy());
   fprintf(erg,"% 8d % 20.8f % 20.8f % 20.8f % 20.8f\n", nfi, atoms->GetTemp(), atoms->GetKinEnergy(), 

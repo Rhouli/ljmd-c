@@ -336,7 +336,8 @@ static void force(mdsys_t *sys)
 
             j = i + tid;
             if (j >= (sys->npair)) break;
-            c1=sys->clist + sys->plist[2*j];
+            c1=sys->clist
+ + sys->plist[2*j];
             c2=sys->clist + sys->plist[2*j+1];
         
             for (j=0; j < c1->natoms; ++j) {

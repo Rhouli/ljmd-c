@@ -10,13 +10,13 @@ void Pair::Init(std::string _pot_type, double arg1, double arg2){
 }
 /* Deconstructor */
 Pair::~Pair(){
-  if(!(pot_type =="LJ")) {
+  if(pot_type =="LJ") {
     delete LJ;
   }
 }
 
 void Pair::ComputeForce(Atoms *atom){
- if(!(pot_type=="LJ")){
+ if(pot_type=="LJ"){
     LJ->ComputeForce(atom);
  }
 }

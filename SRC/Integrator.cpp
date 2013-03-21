@@ -119,7 +119,7 @@ bool Integrator::UpdateCells()
     boxby2 = 0.5 * this->m_atom->GetBoxSize();
     natoms = this->m_atom->GetNAtoms();
         
-    if (this->m_atom->GetNCells()>0) { //orig: sys->clist == NULL
+    if (this->m_atom->GetNCells()>=0) { //orig: sys->clist == NULL
         int nidx;
         
         ngrid  = floor(cellrat * this->m_atom->GetBoxSize() / this->m_atom->GetRadCut());
@@ -177,9 +177,9 @@ bool Integrator::UpdateCells()
         }
         this->m_atom->SetNPairs(npair);
         
-        printf("Cell list has %dx%dx%d=%d cells with %d/%d pairs and "
-               "%d atoms/celllist.\n", ngrid, ngrid, ngrid, this->m_atom->GetNCells(), 
-               this->m_atom->GetNPairs(), ncell*(ncell-1)/2, nidx);
+	// printf("Cell list has %dx%dx%d=%d cells with %d/%d pairs and "
+	//      "%d atoms/celllist.\n", ngrid, ngrid, ngrid, this->m_atom->GetNCells(), 
+        //       this->m_atom->GetNPairs(), ncell*(ncell-1)/2, nidx);
     }
 
     /* reset cell list and sort atoms into cells */
@@ -196,9 +196,12 @@ bool Integrator::UpdateCells()
     for (i=0; i < natoms; ++i) {
         int idx,j,k,m,n;
         
-        k=floor((pbc(this->m_atom->GetPosition(i),            boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
-        m=floor((pbc(this->m_atom->GetPosition(natoms + i),   boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
-        n=floor((pbc(this->m_atom->GetPosition(2*natoms + i), boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
+        k=floor((pbc(this->m_atom->GetPosition(i),            
+		     boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
+        m=floor((pbc(this->m_atom->GetPosition(natoms + i),   
+		     boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
+        n=floor((pbc(this->m_atom->GetPosition(2*natoms + i), 
+		     boxby2, this->m_atom->GetBoxSize())+boxby2)/delta);
         j = ngrid*ngrid*k+ngrid*m+n;
 
         idx = this->m_atom->GetCellNAtoms(j);

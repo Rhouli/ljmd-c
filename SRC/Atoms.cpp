@@ -69,9 +69,9 @@ bool Atoms::Init(int natoms)
     }
 
     //Init position, velocity and force arrays
-    this->m_position = new double[natoms];
-    this->m_velocity = new double[natoms];
-    this->m_force    = new double[natoms];
+    this->m_position = new double[3*natoms];
+    this->m_velocity = new double[3*natoms];
+    this->m_force    = new double[3*natoms];
 
     //No errors
     return true;
@@ -85,7 +85,7 @@ bool Atoms::Init(int natoms)
 bool Atoms::SetPosition(int idx, double pos)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+    if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::SetPosition(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }
@@ -105,7 +105,7 @@ bool Atoms::SetPosition(int idx, double pos)
 bool Atoms::SetVelocity(int idx, double vel)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+    if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::SetVelocity(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }
@@ -125,7 +125,7 @@ bool Atoms::SetVelocity(int idx, double vel)
 bool Atoms::SetForce(int idx, double force)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+    if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::SetForce(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }
@@ -244,7 +244,7 @@ bool Atoms::SetCellNAtoms(int cellID, int natoms)
 double Atoms::GetPosition(int idx)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+    if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::GetPosition(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }
@@ -260,7 +260,7 @@ double Atoms::GetPosition(int idx)
 double Atoms::GetVelocity(int idx)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+  if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::GetVelocity(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }
@@ -276,7 +276,7 @@ double Atoms::GetVelocity(int idx)
 double Atoms::GetForce(int idx)
 {
     //Check index
-    if(idx<0 || idx>(this->m_natoms-1)) {
+    if(idx<0 || idx>(3*this->m_natoms-1)) {
         std::cout << "( ERROR ) Atoms::GetForce(): Index out-of-bound. Abort!" << std::endl;
         return false;
     }

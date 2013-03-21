@@ -10,13 +10,13 @@ void Force::Init(std::string _pot, std::string _pot_type, double arg1, double ar
 }
 /* Deconstructor */
 Force::~Force(){
-  if(!(pot=="PAIR")){
+  if(pot=="PAIR"){
     delete pair;
   }
 }
 
 void Force::ComputeForce(Atoms *atom){
-  if(!(pot=="PAIR")){
+  if(pot=="PAIR"){
     pair->ComputeForce(atom);
   }
 }
