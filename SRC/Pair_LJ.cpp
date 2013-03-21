@@ -8,6 +8,8 @@
 #include "Pair_LJ.h"
 #include "Helper.h"
 #include <math.h>
+#include <stdio.h>
+
 #if defined(_OPENMP)
 #include <omp.h>
 #endif
@@ -55,11 +57,11 @@ void Pair_LJ::ComputeForce(Atoms *atom)
             int j;
 	    //            cell_t *c1;
             
-            x = i + tid;
+            j = x = i + tid;
             if (j >= (atom->GetNCells())) break;
 //            c1=atom->clist + j;
 //            afc=getlist(j) 
-            for (j=0; j < atom->GetCellIndexSize(x)-1; ++j) {
+            for (j=0; j < atom->GetCellNAtoms(x)-1; ++j) {
 //	    for (j=0; j < GetCellData()-1; ++j) {  
                 int ii,k;
                 double rx1, ry1, rz1;		
@@ -70,7 +72,7 @@ void Pair_LJ::ComputeForce(Atoms *atom)
                 ry1=ry[ii];
                 rz1=rz[ii];
         
-                for(k=j+1; k < atom->GetCellIndexSize(x); ++k) {
+                for(k=j+1; k < atom->GetCellNAtoms(x); ++k) {
                     int jj;
                     double rx2,ry2,rz2,rsq;
 
@@ -107,13 +109,13 @@ void Pair_LJ::ComputeForce(Atoms *atom)
             int j;
 	    //            const cell_t *c1, *c2;
 
-            x = i + tid;
+            j = x = i + tid;
             if (x >= (atom->GetNPairs())) break;
 	  
         //    c1=atom->clist + atom->plist[2*x];
         //    c2=atom->clist + atom->plist[2*x+1];
         
-            for (j=0; j < atom->GetCellIndexSize(atom->GetPairItem(2*x)); ++j) {
+            for (j=0; j < atom->GetCellNAtoms(atom->GetPairItem(2*x)); ++j) {
                 int ii, k;
                 double rx1, ry1, rz1;
 
@@ -122,7 +124,7 @@ void Pair_LJ::ComputeForce(Atoms *atom)
                 ry1=ry[ii];
                 rz1=rz[ii];
         
-                for(k=0; k < atom->GetCellIndexSize(atom->GetPairItem(2*x+1)); ++k) {
+                for(k=0; k < atom->GetCellNAtoms(atom->GetPairItem(2*x+1)); ++k) {
                     int jj;
                     double rx2,ry2,rz2,rsq;
                 
@@ -134,12 +136,13 @@ void Pair_LJ::ComputeForce(Atoms *atom)
                     ry2=pbc(ry1 - ry[jj], boxby2, atom->GetBoxSize());
                     rz2=pbc(rz1 - rz[jj], boxby2, atom->GetBoxSize());
                     rsq = rx2*rx2 + ry2*ry2 + rz2*rz2;
-                
+
                     /* compute force and energy if within cutoff */
                     if (rsq < rcsq) {
                         double r6,rinv,ffac;
 
                         rinv=1.0/rsq;
+
                         r6=rinv*rinv*rinv;
                     
                         ffac = (12.0*c12*r6 - 6.0*c6)*r6*rinv;
