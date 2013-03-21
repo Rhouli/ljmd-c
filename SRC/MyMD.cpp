@@ -31,6 +31,7 @@
 
   /* Initializes forces and energies. */
   nfi = 0;
+  integrator->UpdateCells();
   force->ComputeForce(atoms);
   integrator->CalcKinEnergy();
 }
