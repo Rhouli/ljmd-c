@@ -111,6 +111,9 @@ class FileIOMyMD(FileIOCalculator):
         self.write_input(atoms, properties, system_changes)
         io.write_restart(self.parameters.restart, atoms)
 
+        # little hack
+        cell = atoms.get_cell()
+
         if self.command is None:
             raise RuntimeError('Please set $%s environment variable ' %
                                ('ASE_' + self.name.upper() + '_COMMAND') +
@@ -138,6 +141,7 @@ class FileIOMyMD(FileIOCalculator):
 
         # need to add trajectory from xyz file
         traj = io.read_trajectory(self.label + '.xyz')
+        p = self.parameters
 
         if len(traj) != len(self.frames):
             s = "{} frame properties cannot be matched to {} frames"\
@@ -145,6 +149,7 @@ class FileIOMyMD(FileIOCalculator):
             raise RuntimeError(s)
         else:
             for i in range(len(self.frames)):
+                traj[i].set_cell(cell)
                 (self.frames[i]).add_atoms(traj[i])
 
 

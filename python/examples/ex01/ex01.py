@@ -14,7 +14,8 @@ import ase.calculators.mymd as mymd
 myatoms = SimpleCubic('Ar', latticeconstant=3.0, size=(5,5,5))
 
 # Randomize velocities
-MaxwellBoltzmannDistribution(myatoms, temp= units.kB * 50)
+scalef = 8.31446714569e-7      # adjust velocity units
+MaxwellBoltzmannDistribution(myatoms, temp= 50*scalef, force_temp=True)
 
 # Set up MyMD calculator
 calc  = mymd.FileIOMyMD(label='mymd',
