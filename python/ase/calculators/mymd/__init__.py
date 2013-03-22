@@ -41,7 +41,7 @@ class FileIOMyMD(FileIOCalculator):
 
     # TODO: implement 'energy', 'forces'
     notimplemented = ['forces', 'stress',  'dipole', 'magmom', 'magmoms']
-    command = 'ljmd-serial.x < PREFIX.inp > PREFIX.out'
+    command = 'MyMD-serial.x < PREFIX.inp > PREFIX.out'
 
     default_parameters = dict(
         potentials=[potentials.LJPotential()],
