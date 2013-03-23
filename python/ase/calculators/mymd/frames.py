@@ -3,9 +3,10 @@
 
 from ase.atoms import Atoms
 
+
 class Frame(object):
-    """ A single frame of a molecular dynamics calculation 
-    
+    """ A single frame of a molecular dynamics calculation
+
     A frame can have any combination of the properties
         atoms       positions/velocities of atoms
         temp        temperature
@@ -15,7 +16,7 @@ class Frame(object):
 
     """
     def __init__(self, index=None, atoms=None, temp=None,
-             ekin=None, epot=None, etot=None):
+                 ekin=None, epot=None, etot=None):
         self.index = index
         if atoms is None:
             self.atoms = None
@@ -41,19 +42,17 @@ class Frame(object):
             self.atoms = atoms
 
 
-
 class Frames(object):
     """ A collection of frames of a molecular dynamics calculation """
     def __init__(self):
         self.frames = []
         pass
-  
+
     def add(self, frame):
         self.frames.append(frame)
-    
+
     def get(self, index):
         return self.frames[index]
-
 
     def __getitem__(self, index):
         return self.frames[index]
@@ -77,4 +76,3 @@ class Frames(object):
             if val is not None:
                 l.append(val)
         return l
-
